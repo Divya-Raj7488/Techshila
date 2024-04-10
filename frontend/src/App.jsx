@@ -7,6 +7,8 @@ import {
 	useLocation,
 } from "react-router-dom";
 import SuppliersPage from "./Pages/SuppliersPage";
+import StoreManagerPage from "./Pages/StoreManagerPage";
+import createTheme from "@mui/material/styles/createTheme";
 
 function App() {
 	const [count, setCount] = useState(0);
@@ -19,6 +21,11 @@ function App() {
 						exact
 						path="/suppliers"
 						element={<SuppliersPage />}
+					/>
+					<Route
+						exact
+						path="/store-manager"
+						element={<StoreManagerPage />}
 					/>
 				</Routes>
 			</Router>
