@@ -56,3 +56,4 @@ export const data = [
     { heading: 'No. of Orders in current Month', content: '40' },
     // Add more objects as needed
   ];
+];
