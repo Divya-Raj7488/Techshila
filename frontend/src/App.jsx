@@ -7,6 +7,9 @@ import {
 	useLocation,
 } from "react-router-dom";
 import SuppliersPage from "./Pages/SuppliersPage";
+import Sidebar from './Pages/Sidebar'; 
+import AddSupplier from './Pages/AddSupplierPage'
+import AddStoreManager from './Pages/AddStoreManager'
 import Bar from "./Pages/Bar";
 
 function App() {
@@ -22,6 +25,9 @@ function App() {
 						path="/suppliers"
 						element={<SuppliersPage />}
 					/>
+					<Route path="/add-supplier" element={<AddSupplier />} />
+          <Route path="/add-store-manager" element={<AddStoreManager />} />
+          <Route path="/*" element={<Sidebar/>} /> {/* Default route */}
 					<Route
 						exact
 						path="/bar"
