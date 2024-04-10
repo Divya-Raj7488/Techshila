@@ -20,6 +20,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AddIcon from "@mui/icons-material/Add";
 import { setSupplierID, setDialogOpen } from "../../Slices/supplierSlice";
 import { addQuantity, removeItem } from "../../Slices/cartSlice";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // import SupplierDialog from "./SupplierDialog";
 
@@ -77,6 +78,21 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 								}
 							>
 								<AddIcon />
+							</Button>
+							<Button
+								variant="outlined"
+								onClick={() => {
+									if (quantity != 0)
+										dispatch(
+											removeItem({
+												medicineId: medicine.ID,
+												supplierId: supplierId,
+											})
+										);
+									handleChange();
+								}}
+							>
+								<DeleteIcon />
 							</Button>
 						</div>
 					</div>

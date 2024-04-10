@@ -7,6 +7,7 @@ import {
 	useLocation,
 } from "react-router-dom";
 import SuppliersPage from "./Pages/SuppliersPage";
+import StockPage from "./Pages/StocksPage";
 
 function App() {
 	const [count, setCount] = useState(0);
@@ -20,6 +21,7 @@ function App() {
 						path="/suppliers"
 						element={<SuppliersPage />}
 					/>
+					<Route exact path="/stocks" element={<StockPage />} />
 				</Routes>
 			</Router>
 		</>
