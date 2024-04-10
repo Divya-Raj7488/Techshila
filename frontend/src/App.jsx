@@ -14,6 +14,7 @@ import Sidebar from './Pages/Sidebar';
 import AddSupplier from './Pages/AddSupplierPage'
 import AddStoreManager from './Pages/AddStoreManager'
 import Bar from "./Pages/Bar";
+import Login from "./Pages/Login";
 
 function App() {
 	const [count, setCount] = useState(0);
@@ -41,6 +42,11 @@ function App() {
 						exact
 						path="/bar"
 						element={<Bar />}
+					/>
+					<Route
+						exact
+						path="/login"
+						element={<Login />}
 					/>
 				</Routes>
 			</Router>
