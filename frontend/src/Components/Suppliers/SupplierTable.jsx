@@ -9,10 +9,12 @@ import {
 	Paper,
 	Box,
 	TextField,
+	Snackbar,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
-import SupplierRow from "./supplierRow";
+import SupplierRow from "./SupplierRow";
+import { closeSnackbar } from "../../Slices/cartSlice";
 import { suppliers } from "../../dummy";
 
 const SupplierTable = () => {
@@ -35,6 +37,11 @@ const SupplierTable = () => {
 	const filteredSuppliers = suppliers?.filter((supplier) =>
 		supplier.name.toLowerCase().includes(searchTerm)
 	);
+	const handleSnackbarClose = () => {
+		dispatch(closeSnackbar());
+	};
+	const snackbarOpen = useSelector((state) => state.cart.snackbarOpen);
+	const snackbarMsg = useSelector((state) => state.cart.snackbarMsg);
 
 	return (
 		<Box sx={{ width: "100%" }}>
@@ -72,6 +79,12 @@ const SupplierTable = () => {
 					</TableBody>
 				</Table>
 			</TableContainer>
+			<Snackbar
+				open={snackbarOpen}
+				autoHideDuration={3000}
+				onClose={handleSnackbarClose}
+				message={snackbarMsg}
+			/>
 		</Box>
 	);
 };
