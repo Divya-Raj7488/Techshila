@@ -7,11 +7,13 @@ import {
 	useLocation,
 } from "react-router-dom";
 import SuppliersPage from "./Pages/SuppliersPage";
+import Bar from "./Pages/Bar";
 
 function App() {
 	const [count, setCount] = useState(0);
 
 	return (
+		
 		<>
 			<Router>
 				<Routes>
@@ -19,6 +21,11 @@ function App() {
 						exact
 						path="/suppliers"
 						element={<SuppliersPage />}
+					/>
+					<Route
+						exact
+						path="/bar"
+						element={<Bar />}
 					/>
 				</Routes>
 			</Router>
