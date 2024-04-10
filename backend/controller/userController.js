@@ -2,8 +2,36 @@ const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const loginController = () => {};
-const signupController = async (req,res) => {
+const loginController = async (req,res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(404).json({ message: "please enter all the details" });
+  }
+  const existingUser = await userModel.findOne({ email: email });
+  if (!existingUser) {
+    return res
+      .status(404)
+      .json({ message: "user doesnot exist. please signup" });
+  }
+  const isCorrectPwd = await bcrypt.compare(password, existingUser.password);
+  if (!isCorrectPwd) {
+    return res.status(401).json({ message: "unauthorized user" });
+  }
+  const loginToken = jwt.sign(
+    {
+      _id: existingUser._id,
+      fullName: existingUser.fullName,
+      email: existingUser.email,
+    },
+    process.env.LOGIN_SECRET_TOKEN,
+    { expiresIn: "1h" }
+  );
+  return res
+    .status(200)
+    .cookie("Authorization", loginToken)
+    .json({ message: "login successful" });
+};
+const signupController = async (req, res) => {
   const { email, password, fullName, role, address } = req.body;
   const [{ houseName, locality, city, state, country, pincode }] = address;
   if (
@@ -56,7 +84,7 @@ const signupController = async (req,res) => {
       email: newUser.email,
     },
     process.env.LOGIN_SECRET_TOKEN,
-    { expiresIn: "10m" }
+    { expiresIn: "1h" }
   );
   return res
     .status(200)
