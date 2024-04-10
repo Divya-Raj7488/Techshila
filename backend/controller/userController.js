@@ -1,8 +1,9 @@
 const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const orderModel = require("../models/order");
 
-const loginController = async (req,res) => {
+const loginController = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(404).json({ message: "please enter all the details" });
@@ -22,6 +23,7 @@ const loginController = async (req,res) => {
       _id: existingUser._id,
       fullName: existingUser.fullName,
       email: existingUser.email,
+      role: existingUser.role,
     },
     process.env.LOGIN_SECRET_TOKEN,
     { expiresIn: "1h" }
@@ -82,6 +84,7 @@ const signupController = async (req, res) => {
       _id: newUser._id,
       fullName: newUser.fullName,
       email: newUser.email,
+      role: newUser.role,
     },
     process.env.LOGIN_SECRET_TOKEN,
     { expiresIn: "1h" }
@@ -92,4 +95,17 @@ const signupController = async (req, res) => {
     .json({ message: "sign up successful" });
 };
 
-module.exports = { loginController, signupController };
+const getOrders = (req, res) => {
+  // const { _id } = req.user;
+  // const { orderDetails, orderStatus } = orderModel.find({ _id: _id });
+  // return res
+  //   .status(200)
+  //   .json({
+  //     message: "here is your orders",
+  //     orders: { orderDetails, orderStatus },
+  //   });
+  return res.status(200).json({
+    message: "here is your orders",
+  });
+};
+module.exports = { loginController, signupController, getOrders };
