@@ -13,6 +13,7 @@ app.use(cookieParser())
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use("/user", require("./routes/userRoutes"));
+app.use("/order", require("./routes/orderRoutes"));
 
 app.listen(PORT, () => {
   console.log(`app is running on port ${PORT}`);
