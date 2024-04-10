@@ -95,17 +95,4 @@ const signupController = async (req, res) => {
     .json({ message: "sign up successful" });
 };
 
-const getOrders = (req, res) => {
-  // const { _id } = req.user;
-  // const { orderDetails, orderStatus } = orderModel.find({ _id: _id });
-  // return res
-  //   .status(200)
-  //   .json({
-  //     message: "here is your orders",
-  //     orders: { orderDetails, orderStatus },
-  //   });
-  return res.status(200).json({
-    message: "here is your orders",
-  });
-};
-module.exports = { loginController, signupController, getOrders };
+module.exports = { loginController, signupController};
