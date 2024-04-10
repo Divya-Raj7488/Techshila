@@ -207,3 +207,13 @@ export const medicines = [
 		price: "$15.50",
 	},
 ];
+
+export const data = [
+    { heading: 'Medicine Sales', content: '8820' },
+    { heading: 'Medicine List', content: '8' },
+    { heading: 'Expired Drugs', content: '1' },
+    { heading: 'Amount Payable', content: '450' },
+    { heading: 'Transaction Today', content: '0' },
+    { heading: 'No. of Orders in current Month', content: '40' },
+    // Add more objects as needed
+  ];

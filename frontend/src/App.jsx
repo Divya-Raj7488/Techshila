@@ -32,6 +32,7 @@ function App() {
 						exact
 						path="/store-manager"
 						element={<StoreManagerPage />}
+						/>
 					<Route exact path="/stocks" element={<StockPage />} />
 					<Route path="/add-supplier" element={<AddSupplier />} />
           <Route path="/add-store-manager" element={<AddStoreManager />} />
