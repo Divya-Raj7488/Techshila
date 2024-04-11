@@ -32,6 +32,7 @@ const loginController = async (req, res) => {
 	);
 
 	const userData = {
+		_id: existingUser._id,
 		name: existingUser.fullName,
 		email: existingUser.email,
 		role: existingUser.role,
