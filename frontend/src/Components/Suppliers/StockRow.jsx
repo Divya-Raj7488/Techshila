@@ -159,6 +159,9 @@ const StockRow = ({ med }) => {
 				<TableCell align="center">
 					<AddQuantityBtn med={med} supplierId={med.sID} />
 				</TableCell>
+				{/* {user.ceo && <TableCell align="center">
+					<AddQuantityBtn med={med} supplierId={med.sID} />
+				</TableCell>} */}
 			</TableRow>
 		</React.Fragment>
 	);
