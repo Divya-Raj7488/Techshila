@@ -44,9 +44,9 @@ import {
   
     return (
       <div>
-        <h1 style={{ color: "darkgrey" }}>Add Supplier's Details</h1>
+        <h1 style={{ color: "darkgrey" , paddingTop: "100px", paddingLeft: "510px" , paddingRight:"500px" , textAlign:"left" }}>Add Supplier's Details</h1>
         
-        <form style={{ paddingTop: "10px", paddingLeft: "10px" }}  onSubmit={handleSubmit}>
+        <form style={{ paddingTop: "50px", paddingLeft: "500px" , paddingRight:"500px" }}  onSubmit={handleSubmit}>
           <Stack spacing={1} direction="column" sx={{ marginBottom: 3 }}>
             <FormControl>
               <InputLabel htmlFor="fname">Name</InputLabel>
