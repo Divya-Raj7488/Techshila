@@ -4,6 +4,7 @@ import cartReducer from "./Slices/cartSlice";
 import stockReducer from "./Slices/stockSlice";
 import managerReducer from "./Slices/managerSlice";
 import inventoryReducer from "./Slices/inventorySlice";
+import userReducer from "./Slices/userSlice";
 
 const store = configureStore({
 	reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
 		stock: stockReducer,
 		manager: managerReducer,
 		inventory: inventoryReducer,
+		user: userReducer,
 	},
 });
 
