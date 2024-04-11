@@ -70,7 +70,7 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 								variant="outlined"
 								onClick={() =>
 									addToCart(
-										medicine.ID,
+										medicine._id,
 										medicine.name,
 										supplierId,
 										quantity
@@ -85,7 +85,7 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 									if (quantity != 0)
 										dispatch(
 											removeItem({
-												medicineId: medicine.ID,
+												medicineId: medicine._id,
 												supplierId: supplierId,
 											})
 										);
@@ -120,9 +120,6 @@ const SupplierRow = (props) => {
 			setQuantity(updatedQuantity);
 		}
 	};
-	useEffect(() => {
-		console.log(quantity);
-	}, [quantity]);
 
 	const [open, setOpen] = useState(false);
 	const medicines = row.medicines;
@@ -136,7 +133,7 @@ const SupplierRow = (props) => {
 				}}
 				onClick={(event) => {
 					if (event.target.cellIndex !== 0) {
-						dispatch(setSupplierID(row.ID));
+						dispatch(setSupplierID(row._id));
 						dispatch(setDialogOpen());
 					}
 				}}
@@ -222,7 +219,7 @@ const SupplierRow = (props) => {
 									</TableHead>
 									<TableBody>
 										{medicines.map((medicine) => (
-											<React.Fragment key={medicine.ID}>
+											<React.Fragment key={medicine._id}>
 												<TableRow>
 													<TableCell
 														sx={{
@@ -259,7 +256,7 @@ const SupplierRow = (props) => {
 													<TableCell align="center">
 														<AddQuantityBtn
 															medicine={medicine}
-															supplierId={row.ID}
+															supplierId={row._id}
 														/>
 													</TableCell>
 												</TableRow>

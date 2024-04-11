@@ -7,7 +7,6 @@ export const getMedicines = createAsyncThunk("medicines/get", async () => {
 		.get(medicineApi)
 		.then((response) => {
 			if (response.status === 200) {
-				console.log(response.data);
 				return response.data.medicines;
 			}
 		})
