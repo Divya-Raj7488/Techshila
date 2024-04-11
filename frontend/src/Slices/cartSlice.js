@@ -1,9 +1,55 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { stockApi, summaryApi } from "../Links";
+import axios from "axios";
+
+export const getSummary = createAsyncThunk(
+	"stockOrder/getSummary",
+	async (stockOrderData) => {
+		return axios
+			.post(summaryApi, stockOrderData)
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				} else {
+					throw new Error("Invalid stock order name or password");
+				}
+			})
+			.catch((error) => {
+				throw new Error(
+					error.response?.data.message || "An error occurred"
+				);
+			});
+	}
+);
+
+export const createOrder = createAsyncThunk(
+	"stockOrder/add",
+	async (stockOrderData) => {
+		console.log(stockOrderData);
+		return axios
+			.post(stockApi, stockOrderData)
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				} else {
+					throw new Error("Invalid stockOrdername or password");
+				}
+			})
+			.catch((error) => {
+				throw new Error(
+					error.response.data.message || "An error occurred"
+				);
+			});
+	}
+);
 
 const initialState = {
 	items: [],
 	snackbarOpen: false,
 	snackbarMsg: "",
+	summary: [],
+	open: false,
+	totalPrice: 0,
 };
 
 export const cartSlice = createSlice({
@@ -72,6 +118,38 @@ export const cartSlice = createSlice({
 		closeSnackbar: (state) => {
 			state.snackbarOpen = false;
 		},
+		setOrderDialog: (state) => {
+			state.open = !state.open;
+		},
+	},
+	extraReducers: (builder) => {
+		builder
+			.addCase(getSummary.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(getSummary.fulfilled, (state, action) => {
+				state.loading = false;
+				state.summary = action.payload.orderedMedicines;
+				state.totalPrice = action.payload.totalPrice;
+				state.error = "";
+			})
+			.addCase(getSummary.rejected, (state, action) => {
+				state.loading = false;
+				state.summary = [];
+				state.error = action.error.message;
+			})
+			.addCase(createOrder.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(createOrder.fulfilled, (state, action) => {
+				state.loading = false;
+				state.items = [];
+				state.error = "";
+			})
+			.addCase(createOrder.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.error.message;
+			});
 	},
 });
 
@@ -82,10 +160,11 @@ export const {
 	removeItem,
 	clearCart,
 	closeSnackbar,
+	setOrderDialog,
 } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;
-export const selectMedicines = (state, selectedSupplierId) =>
+export const selectMedicines = (state, selectedOrderId) =>
 	state.cart.items.filter((item) => item.supplierId === selectedSupplierId);
 export const selectCartTotal = (state) =>
 	state.cart.items.reduce((total, item) => total + item.price, 0);

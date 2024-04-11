@@ -2,29 +2,32 @@ import React, { useEffect, useState } from "react";
 import SupplierTable from "../Components/Suppliers/SupplierTable";
 import {useSelector} from 'react-redux'
 
-import {
-	Button,
-	Dialog,
-	DialogTitle,
-	Typography,
-	DialogActions,
-	Box,
-} from "@mui/material";
+import { Button, Dialog, DialogTitle, Typography, Box } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
 import AddSupplier from "./AddSupplierPage";
 import useGetUser from "../utils/useGetUser";
+
+import { getSummary } from "../Slices/cartSlice";
+import OrderSummaryDialog from "../Components/Cart/OrderSummaryDialog";
+import { setOrderDialog } from "../Slices/cartSlice";
+ 
 const SuppliersPage = () => {
-	const postOrder = () => {
-		alert("Order sent!");
+	const dispatch = useDispatch();
+	useGetUser();
+	const items = useSelector((state) => state.cart.items);
+
+	const sendOrder = () => {
+		if (items && items.length > 0) {
+			dispatch(getSummary({ stocks: items })).then(() =>
+				dispatch(setOrderDialog(true))
+			);
+		}
 	};
 
 	const [open, setOpen] = useState(false);
-	const [selectedManager, setSelectedManager] = useState();
-	const [selectedInventory, setSelectedInventory] = useState();
-
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
-
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -72,20 +75,18 @@ useGetUser()
 			<Dialog maxWidth="md" open={open} onClose={handleClose}>
 				<DialogTitle>Add a Supplier</DialogTitle>
 				<AddSupplier />
-				<DialogActions>
-					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={handleSave}>Save</Button>
-				</DialogActions>
 			</Dialog>
 			<SupplierTable />
-			<Button
-				variant="contained"
-				sx={{ m: 2, marginLeft: "auto" }}
-				onClick={postOrder}
-				style={{ display: showSendOrderButton ? 'block' : 'none' }}
-			>
-				Send Order
-			</Button>
+			{items && items.length > 0 && (
+				<Button
+					variant="contained"
+					sx={{ m: 2, marginLeft: "auto" }}
+					onClick={sendOrder}
+				>
+					Send Order
+				</Button>
+			)}
+			<OrderSummaryDialog />
 		</Box>
 	);
 };
