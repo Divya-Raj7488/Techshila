@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useSyncExternalStore } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Collapse,
 	IconButton,
@@ -7,35 +7,21 @@ import {
 	TableBody,
 	TableCell,
 	TableHead,
-	Button,
 	TableRow,
 	Box,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { setSupplierID, setDialogOpen } from "../../Slices/supplierSlice";
-import { addToCart, removeFromCart } from "../../Slices/cartSlice";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import InventoryDialog from "./InventoryDialog";
+import { useDispatch } from "react-redux";
+import { setInventory, setDialogOpen } from "../../Slices/inventorySlice";
+import { setManagerID } from "../../Slices/managerSlice";
 
-// import SupplierDialog from "./SupplierDialog";
-
-const SupplierRow = (props) => {
+const InventoryRow = (props) => {
 	const dispatch = useDispatch();
 	const { row } = props;
 	const [open, setOpen] = useState(false);
-	const medicines = row.medicines;
-
-	const add = (medicine) => {
-		dispatch(addToCart(medicine));
-	};
-
-	const remove = (medicine) => {
-		dispatch(removeFromCart(medicine));
-	};
-
 	return (
 		<React.Fragment>
 			<TableRow
@@ -45,8 +31,15 @@ const SupplierRow = (props) => {
 				}}
 				onClick={(event) => {
 					if (event.target.cellIndex !== 0) {
-						dispatch(setSupplierID(row.ID));
+						console.log(row);
+						dispatch(setInventory(row));
 						dispatch(setDialogOpen());
+						dispatch(
+							setManagerID({
+								managerID: row.managerID,
+								manager: row.Manager,
+							})
+						);
 					}
 				}}
 			>
@@ -73,14 +66,14 @@ const SupplierRow = (props) => {
 				>
 					{row.name}
 				</TableCell>
-				<TableCell sx={{ fontFamily: "Poppins" }}>
-					{row.email}
+				<TableCell sx={{ fontFamily: "Poppins" }} align="right">
+					{row.location}
 				</TableCell>
-				<TableCell sx={{ fontFamily: "Poppins" }}>
-					{row.phone}
+				<TableCell sx={{ fontFamily: "Poppins" }} align="right">
+					{row.revenueCurrentDay}
 				</TableCell>
-				<TableCell sx={{ fontFamily: "Poppins" }}>
-					{row.joiningDate}
+				<TableCell sx={{ fontFamily: "Poppins" }} align="right">
+					{row.revenueCurrentMonth}
 				</TableCell>
 			</TableRow>
 			<TableRow>
@@ -90,19 +83,23 @@ const SupplierRow = (props) => {
 					colSpan={7}
 				>
 					<Collapse in={open} timeout="auto" unmountOnExit>
-						<Box sx={{ margin: 1, px: 15 }}>
+						<Box sx={{ margin: 1 }}>
 							<Typography
-								fontFamily={"Poppins"}
-								variant="body1"
-								fontWeight={500}
+								variant="h6"
 								gutterBottom
 								component="div"
 							>
-								Medicines They Provide
+								Assigned Store Managers
 							</Typography>
 							<Table size="small" aria-label="details">
 								<TableHead>
 									<TableRow>
+										<TableCell />
+										<TableCell
+											sx={{ fontFamily: "Poppins" }}
+										>
+											Joining Date
+										</TableCell>
 										<TableCell
 											sx={{ fontFamily: "Poppins" }}
 										>
@@ -111,62 +108,66 @@ const SupplierRow = (props) => {
 										<TableCell
 											sx={{ fontFamily: "Poppins" }}
 										>
-											Type
+											Gender
 										</TableCell>
 										<TableCell
 											sx={{ fontFamily: "Poppins" }}
+											align="right"
 										>
-											Price
+											Phone
 										</TableCell>
 										<TableCell
 											sx={{ fontFamily: "Poppins" }}
+											align="right"
 										>
-											Expiry Date
+											Email
 										</TableCell>
-										<TableCell />
+										<TableCell
+											sx={{ fontFamily: "Poppins" }}
+											align="right"
+										>
+											Department
+										</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									{medicines.map((medicine) => (
-										<TableRow key={medicine.ID}>
+									{row.managers.map((manager) => (
+										<TableRow key={manager.ID}>
+											<TableCell />
 											<TableCell
 												sx={{ fontFamily: "Poppins" }}
+												component="th"
+												scope="row"
 											>
-												{medicine.name}
+												{manager.joiningDate}
 											</TableCell>
 											<TableCell
 												sx={{ fontFamily: "Poppins" }}
 											>
-												{medicine.type}
+												{manager.name}
 											</TableCell>
 											<TableCell
 												sx={{ fontFamily: "Poppins" }}
 											>
-												{medicine.price}
+												{manager.gender}
 											</TableCell>
 											<TableCell
 												sx={{ fontFamily: "Poppins" }}
+												align="right"
 											>
-												{medicine.expiryDate}
+												{manager.phone}
 											</TableCell>
-											<TableCell align="right">
-												<Button
-													variant="outlined"
-													onClick={() =>
-														remove(medicine)
-													}
-												>
-													<RemoveIcon />
-												</Button>
-												<Button
-													sx={{ paddingX: 1 }}
-													variant="outlined"
-													onClick={() =>
-														add(medicine)
-													}
-												>
-													<AddIcon />
-												</Button>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+												align="right"
+											>
+												{manager.email}
+											</TableCell>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+												align="right"
+											>
+												{manager.department}
 											</TableCell>
 										</TableRow>
 									))}
@@ -176,8 +177,8 @@ const SupplierRow = (props) => {
 					</Collapse>
 				</TableCell>
 			</TableRow>
-			{/* <SupplierDialog /> */}
+			<InventoryDialog />
 		</React.Fragment>
 	);
 };
-export default SupplierRow;
+export default InventoryRow;
