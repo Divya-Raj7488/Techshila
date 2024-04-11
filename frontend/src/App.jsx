@@ -19,7 +19,7 @@ function App() {
 	return (
 		<>
 			<Router>
-				<Bar />
+				
 				<Routes>
 
 					<Route exact path="/suppliers" element={<SuppliersPage />} />
@@ -38,6 +38,29 @@ function App() {
 						exact
 						path="/profile"
 						element={<UserProfile/>}
+					/>
+					<Route
+						exact
+						path="/suppliers"
+						element={<SuppliersPage />}
+					/>
+					<Route
+						path="/add-medicine"
+						element={<AddMedicine />}
+					/>
+					<Route
+						path="/add-supplier"
+						element={<AddSupplier />}
+					/>
+					<Route
+						exact
+						path="/summary"
+						element={<Summary />}
+					/>
+					<Route
+						exact
+						path="/store-manager"
+						element={<StoreManagerPage />}
 					/>
 				
 					
