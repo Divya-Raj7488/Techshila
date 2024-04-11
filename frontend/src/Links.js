@@ -3,3 +3,4 @@ export const supplierApi = `${localhost}supplier/`;
 export const stockApi = `${localhost}stock/`;
 export const inventoryApi = `${localhost}inventory/`;
 export const managerApi = `${localhost}manager/`;
+export const medicineApi=`${localhost}user/get-all-medicines/`

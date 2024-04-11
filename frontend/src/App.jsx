@@ -18,6 +18,7 @@ import Login from "./Pages/Login";
 import InventoriesPage from "./Pages/InventoriesPage";
 import UserPage from "./Pages/UserPage"
 import UserProfile from "./Pages/UserProfile"
+import Summary from "./Pages/OrderSummary"
 function App() {
 	const [count, setCount] = useState(0);
 
@@ -39,6 +40,11 @@ function App() {
 						exact
 						path="/suppliers"
 						element={<SuppliersPage />}
+					/>
+					<Route
+						exact
+						path="/summary"
+						element={<Summary />}
 					/>
 					<Route
 						exact
