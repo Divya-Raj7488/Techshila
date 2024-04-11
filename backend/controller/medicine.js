@@ -8,6 +8,4 @@ const getAllMedicines = async (req, res) => {
     .json({ messages: "here is your medicines", medicines: medicines });
 };
 
-
-
 module.exports = getAllMedicines;

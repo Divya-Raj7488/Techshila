@@ -6,23 +6,26 @@ const InventorySchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    // managerName: {
-    //   type: String,
-    //   required: true,
-    // },
-    // department: {
-    //   type: String,
-    //   required: true,
-    // },
-    // startDate: {
-    //   type: Date,
-    //   required: true,
-    // },
   },
   manager: {
     type: String,
     required: true,
   },
+  // location: {
+  //   type: Point,
+  //   coordinates: [
+  //     {
+  //       longitude: {
+  //         type: String,
+  //         required: true,
+  //       },
+  //       latitude: {
+  //         type: String,
+  //         required: true,
+  //       },
+  //     },
+  //   ],
+  // },
   address: [
     {
       houseName: {
