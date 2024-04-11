@@ -17,6 +17,7 @@ app.use("/order", require("./routes/orderRoutes"));
 app.use("/inventary", require("./routes/inventary"));
 app.use("/stocks", require("./routes/stockRoutes"));
 app.use("/suppliers", require("./routes/supplierRoutes"));
+app.use("/medicines", require("./routes/medicineRoutes"));
 
 app.listen(PORT, () => {
 	console.log(`app is running on port ${PORT}`);

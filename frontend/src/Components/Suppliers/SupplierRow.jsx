@@ -189,77 +189,85 @@ const SupplierRow = (props) => {
 								gutterBottom
 								component="div"
 							>
-								Medicines They Provide
+								{medicines?.length > 0
+									? "Medicines They Provide"
+									: "No Medicines Provided Yet"}
 							</Typography>
-							<Table size="small" aria-label="details">
-								<TableHead>
-									<TableRow>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Name
-										</TableCell>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Type
-										</TableCell>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Price
-										</TableCell>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Expiry Date
-										</TableCell>
-										<TableCell />
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{medicines.map((medicine) => (
-										<React.Fragment key={medicine.ID}>
-											<TableRow>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.name}
-												</TableCell>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.type}
-												</TableCell>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.price}
-												</TableCell>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.expiryDate}
-												</TableCell>
-												<TableCell align="center">
-													<AddQuantityBtn
-														medicine={medicine}
-														supplierId={row.ID}
-													/>
-												</TableCell>
-											</TableRow>
-										</React.Fragment>
-									))}
-								</TableBody>
-							</Table>
+							{medicines && medicines.length > 0 && (
+								<Table size="small" aria-label="details">
+									<TableHead>
+										<TableRow>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Name
+											</TableCell>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Type
+											</TableCell>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Price
+											</TableCell>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Expiry Date
+											</TableCell>
+											<TableCell />
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{medicines.map((medicine) => (
+											<React.Fragment key={medicine.ID}>
+												<TableRow>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.name}
+													</TableCell>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.type}
+													</TableCell>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.price}
+													</TableCell>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.expiryDate}
+													</TableCell>
+													<TableCell align="center">
+														<AddQuantityBtn
+															medicine={medicine}
+															supplierId={row.ID}
+														/>
+													</TableCell>
+												</TableRow>
+											</React.Fragment>
+										))}
+									</TableBody>
+								</Table>
+							)}
 						</Box>
 					</Collapse>
 				</TableCell>
