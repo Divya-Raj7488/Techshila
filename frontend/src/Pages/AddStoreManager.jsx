@@ -38,10 +38,10 @@ const AddStoreManager = () => {
 
   return (
     <div>
-      <h1 style={{ color: "darkgrey" }}>Add Store Manager Details</h1>
+      <h1 style={{ color: "darkgrey" , paddingTop: "100px", paddingLeft: "510px" , paddingRight:"500px" , textAlign:"left" , fontSize:"30px"}}>Add Store Manager Details</h1>
 
-      <form style={{ paddingTop: "10px", paddingLeft: "10px" }} onSubmit={handleSubmit}>
-        <Stack spacing={2} direction="column" sx={{ marginBottom: 4 }}>
+      <form style={{ paddingTop: "50px", paddingLeft: "500px" , paddingRight:"500px" }} onSubmit={handleSubmit}>
+        <Stack spacing={1} direction="column" sx={{ marginBottom: 4}}>
           
           <FormControl>
             <InputLabel htmlFor="email">Email address</InputLabel>

@@ -37,7 +37,7 @@ const InventoriesPage = () => {
 	const [selectedManager, setSelectedManager] = useState();
 	const [selectedInventory, setSelectedInventory] = useState();
 
-	const handleSave = () => {
+		const handleSave = () => {
 		// dispatch(
 		// 	createInventory({
 
@@ -106,12 +106,12 @@ const InventoriesPage = () => {
 									setSelectedInventory(e.target.value);
 								}}
 							>
-								{inventories?.map((inventory) => (
+								{inventories.map((inventory) => (
 									<MenuItem
 										key={inventory.ID}
 										value={inventory.ID}
 									>
-										{inventory.inventory_name}
+										{inventory.name}
 									</MenuItem>
 								))}
 							</Select>
