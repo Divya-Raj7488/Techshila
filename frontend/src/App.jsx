@@ -16,7 +16,8 @@ import AddStoreManager from "./Pages/AddStoreManager";
 import Bar from "./Pages/Bar";
 import Login from "./Pages/Login";
 import InventoriesPage from "./Pages/InventoriesPage";
-
+import UserPage from "./Pages/UserPage"
+import UserProfile from "./Pages/UserProfile"
 function App() {
 	const [count, setCount] = useState(0);
 
@@ -24,6 +25,16 @@ function App() {
 		<>
 			<Router>
 				<Routes>
+				<Route
+						exact
+						path="/user"
+						element={<UserPage />}
+					/>
+					<Route
+						exact
+						path="/profile"
+						element={<UserProfile/>}
+					/>
 					<Route
 						exact
 						path="/suppliers"
