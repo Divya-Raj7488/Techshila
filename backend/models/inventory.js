@@ -2,8 +2,22 @@ const mongoose = require("mongoose");
 
 const InventorySchema = new mongoose.Schema({
   inventoryName: {
-    type: String,
-    required: true,
+    managerId: {
+      type: String,
+      required: true,
+    },
+    // managerName: {
+    //   type: String,
+    //   required: true,
+    // },
+    // department: {
+    //   type: String,
+    //   required: true,
+    // },
+    // startDate: {
+    //   type: Date,
+    //   required: true,
+    // },
   },
   manager: {
     type: String,

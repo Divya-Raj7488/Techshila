@@ -107,6 +107,4 @@ const updateMedicines = async (req, res) => {
   }
 };
 
-
-
 module.exports = { addInventory, updateMedicines, getStore };
