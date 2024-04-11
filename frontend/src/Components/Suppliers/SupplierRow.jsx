@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState  } from "react";
+import {useSelector} from 'react-redux'
 import {
 	Collapse,
 	IconButton,
@@ -21,6 +22,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { setSupplierID, setDialogOpen } from "../../Slices/supplierSlice";
 import { addQuantity, removeItem } from "../../Slices/cartSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
+import useGetUser from "../../utils/useGetUser";
+
 
 // import SupplierDialog from "./SupplierDialog";
 
@@ -36,9 +39,24 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 	const handleChange = () => {
 		setChecked((prev) => !prev);
 	};
+	// const userRole = useSelector(state => state.user.role); // Assuming you have access to user role in Redux store
+
+	useGetUser()
+	const [showAddQuantityButton, setShowAddQuantityButton] = useState(true); 
+	 const user = useSelector((state) => state.user.userLoggedIn)
+	 const role = user?.role
+	//const userRole = useSelector(state => state.user.role);
+	 useEffect(() => {
+	 	if(role === 'ceo')
+		{
+			setShowAddQuantityButton(false);
+		  } else {
+			setShowAddQuantityButton(true);
+		  }
+	},[role]);
 	return (
 		<>
-			{!checked && <Button onClick={handleChange}>Add Quantity</Button>}
+			{(showAddQuantityButton && !checked) && <Button onClick={handleChange}>Add Quantity</Button>}
 			{checked && (
 				<Grow
 					in={checked}

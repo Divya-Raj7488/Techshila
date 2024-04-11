@@ -13,14 +13,17 @@ import Login from "./Pages/Login";
 import InventoriesPage from "./Pages/InventoriesPage";
 import UserPage from "./Pages/UserPage"
 import UserProfile from "./Pages/UserProfile"
+import Summary from "./Pages/OrderSummary"
 import AddMedicine from "./Pages/AddMedicines";
+import OrderStatus from "./Pages/OrderStatus";
+
 function App() {
 	const [count, setCount] = useState(0);
 
 	return (
 		<>
 			<Router>
-				<Bar />
+				
 				<Routes>
 
 					<Route exact path="/suppliers" element={<SuppliersPage />} />
@@ -55,8 +58,18 @@ function App() {
 					/>
 					<Route
 						exact
+						path="/summary"
+						element={<Summary />}
+					/>
+					<Route
+						exact
 						path="/store-manager"
 						element={<StoreManagerPage />}
+					/>
+					<Route
+						exact
+						path="/orderstatus"
+						element={<OrderStatus />}
 					/>
 				
 					
