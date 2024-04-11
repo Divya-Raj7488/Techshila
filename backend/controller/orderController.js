@@ -12,7 +12,7 @@ const getOrders = (req, res) => {
   });
 };
 
-const recieveOrders = async (req, res) => {
+const createOrders = async (req, res) => {
   const { _id } = req.user;
   const { inventoryId, orderDetails, orderStatus } = req.body;
   if (
@@ -59,4 +59,4 @@ const recieveOrders = async (req, res) => {
   }
 };
 
-module.exports = { getOrders, recieveOrders };
+module.exports = { getOrders, createOrders};

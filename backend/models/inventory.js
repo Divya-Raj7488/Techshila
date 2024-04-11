@@ -81,15 +81,6 @@ const InventorySchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
-      medicineName: {
-        type: String,
-        required: true,
-      },
-      medicineType: {
-        type: String,
-        enum: ["syrup", "tablet", "injection"],
-        required: true,
-      },
       Quantity: {
         type: Number,
         required: true,
