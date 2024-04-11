@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import Grid from '@mui/material/Grid';
 import OrderTable from "../Components/StoreManager/orderTable";
 import InventoryCard from "../Components/StoreManager/eopcard";
+import {useSelector} from 'react-redux'
+import useGetUser from "../utils/useGetUser";
 
 const StoreManagerPage = () => {
+
+  useGetUser()
+	const user = useSelector((state) => state.user.userLoggedIn)
+	const role = user?.role
+	useEffect(() => {
+		if(role === 'user')
+		window.location.href = '/user';
+	},[role])
+
   return (
     <>
       <Box>
