@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SupplierTable from "../Components/Suppliers/SupplierTable";
+import {useSelector} from 'react-redux'
 
 import {
 	Button,
@@ -10,6 +11,7 @@ import {
 	Box,
 } from "@mui/material";
 import AddSupplier from "./AddSupplierPage";
+import useGetUser from "../utils/useGetUser";
 const SuppliersPage = () => {
 	const postOrder = () => {
 		alert("Order sent!");
@@ -29,6 +31,25 @@ const SuppliersPage = () => {
 	const handleSave = () => {
 		handleClose();
 	};
+	//for hiding from user.
+	const [showSendOrderButton, setShowSendOrderButton] = useState(true); // State to control the visibility of the "Send Order" button
+  
+useGetUser()
+	const user = useSelector((state) => state.user.userLoggedIn)
+	const role = user?.role
+	useEffect(() => {
+		if(role === 'user')
+		window.location.href = '/user';
+	},[role]);
+
+    useEffect(() => {
+		
+    
+
+    // Logic to hide the "Send Order" button if the user role is CEO
+    const showSendOrderButton = role !== 'ceo';
+    setShowSendOrderButton(showSendOrderButton);
+	},[role]);
 
 	return (
 		<Box
@@ -61,6 +82,7 @@ const SuppliersPage = () => {
 				variant="contained"
 				sx={{ m: 2, marginLeft: "auto" }}
 				onClick={postOrder}
+				style={{ display: showSendOrderButton ? 'block' : 'none' }}
 			>
 				Send Order
 			</Button>

@@ -17,6 +17,7 @@ import { setDialogOpen } from "../../Slices/inventorySlice";
 import ManagerCard from "./ManagerCard";
 import { managers } from "../../dummy";
 import StockTable from "../Suppliers/StockTable";
+import CurrentOrdersTable from "../StoreManager/orderTable";
 
 const InventoryDialog = () => {
 	const dispatch = useDispatch();
@@ -81,6 +82,16 @@ const InventoryDialog = () => {
 			</Box>
 			<Box p={2}>
 				<StockTable />
+				
+            <Typography p={3} variant="h4" fontFamily={"Poppins"}>
+              Current Orders
+            </Typography>
+          
+
+          
+            {/* Render the OrderTable component */}
+            <CurrentOrdersTable />
+          
 			</Box>
 		</Dialog>
 	);
