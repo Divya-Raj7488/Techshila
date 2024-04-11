@@ -19,7 +19,6 @@ const AddSupplier = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [phnNumber, setPhoneNumber] = useState("");
-	const [dateOfJoining, setDateOfJoining] = useState("");
 	const [selectedMedicines, setSelectedMedicines] = useState([]);
 
 	const medicines = useSelector((state) => state.medicine.medicinesList);
@@ -28,23 +27,18 @@ const AddSupplier = () => {
 		dispatch(getMedicines());
 	}, []);
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		const supplierData = {
-			name: name,
-			email: email,
-			phone: phnNumber,
-			dateOfJoining: dateOfJoining,
-			selectedMedicines: selectedMedicines,
-		};
-
-		console.log("Supplier Data:", supplierData);
-		dispatch(createSupplier(supplierData));
-		setName("");
-		setEmail("");
-		setPhoneNumber("");
-		setDateOfJoining("");
-		setSelectedMedicines([]);
+	const handleSubmit = () => {
+		dispatch(
+			createSupplier({
+				name: name,
+				email: email,
+				phone: phnNumber,
+				medicines: selectedMedicines.map(
+					(name) =>
+						medicines.find((medicine) => medicine.name === name)._id
+				),
+			})
+		);
 	};
 
 	return (
@@ -105,14 +99,15 @@ const AddSupplier = () => {
 								input={<Input />}
 								renderValue={(selected) => selected.join(", ")}
 							>
-								{medicines?.map((medicine) => (
-									<MenuItem
-										key={medicine._id}
-										value={medicine._id}
-									>
-										{medicine.name}
-									</MenuItem>
-								))}
+								{medicines?.length > 0 &&
+									medicines.map((medicine) => (
+										<MenuItem
+											key={medicine._id}
+											value={medicine.name}
+										>
+											{medicine.name}
+										</MenuItem>
+									))}
 							</Select>
 							<FormHelperText>
 								{" "}
@@ -120,19 +115,6 @@ const AddSupplier = () => {
 							</FormHelperText>
 						</FormControl>
 					</Stack>
-				</Stack>
-				<Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
-					<FormControl fullWidth>
-						<TextField
-							type="date"
-							value={dateOfJoining}
-							onChange={(e) => setDateOfJoining(e.target.value)}
-							InputLabelProps={{
-								shrink: true,
-							}}
-							fullWidth
-						/>
-					</FormControl>
 				</Stack>
 
 				<Button variant="contained" color="success" type="submit">
