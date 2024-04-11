@@ -209,11 +209,122 @@ export const medicines = [
 ];
 
 export const data = [
-    { heading: 'Medicine Sales', content: '8820' },
-    { heading: 'Medicine List', content: '8' },
-    { heading: 'Expired Drugs', content: '1' },
-    { heading: 'Amount Payable', content: '450' },
-    { heading: 'Transaction Today', content: '0' },
-    { heading: 'No. of Orders in current Month', content: '40' },
-    // Add more objects as needed
-  ];
+	{ heading: "Medicine Sales", content: "8820" },
+	{ heading: "Medicine List", content: "8" },
+	{ heading: "Expired Drugs", content: "1" },
+	{ heading: "Amount Payable", content: "450" },
+	{ heading: "Transaction Today", content: "0" },
+	{ heading: "No. of Orders in current Month", content: "40" },
+	// Add more objects as needed
+];
+
+export const inventories = [
+	{
+		ID: 1,
+		name: "Inventory 1",
+		location: "Location 1",
+		medicinesAvailable: medicines,
+		revenueCurrentMonth: "$5000.00",
+		revenueCurrentDay: "$200.00",
+		managers: [
+			{
+				ID: 1,
+				name: "Manager 1",
+				email: "manager1@example.com",
+				phone: "123-456-7890",
+				department: "Pharmacy",
+				onLeaveToday: true,
+				leaves: 4,
+				workDays: 88,
+				gender: "male",
+				joiningDate: "2022-04-05",
+			},
+			{
+				ID: 2,
+				name: "Manager 2",
+				email: "manager2@example.com",
+				phone: "234-567-8901",
+				department: "Logistics",
+				onLeaveToday: false,
+				leaves: 4,
+				workDays: 88,
+				gender: "male",
+				joiningDate: "2022-04-05",
+			},
+		],
+	},
+	{
+		ID: 2,
+		name: "Inventory 2",
+		location: "Location 2",
+		medicinesAvailable: medicines,
+		revenueCurrentMonth: "$7000.00",
+		revenueCurrentDay: "$300.00",
+		managers: [
+			{
+				ID: 3,
+				name: "Manager 3",
+				email: "manager3@example.com",
+				phone: "345-678-9012",
+				department: "Operations",
+				onLeaveToday: false,
+				leaves: 4,
+				workDays: 88,
+				gender: "male",
+				joiningDate: "2022-04-05",
+			},
+		],
+	},
+	// Add more dummy data as needed
+];
+
+export const managers = [
+	{
+		ID: 1,
+		name: "Manager 1",
+		email: "manager1@example.com",
+		phone: "123-456-7890",
+		department: "Pharmacy",
+		onLeaveToday: true,
+		leaves: 4,
+		workDays: 88,
+		gender: "male",
+		joiningDate: "2022-04-05",
+	},
+	{
+		ID: 2,
+		name: "Manager 2",
+		email: "manager2@example.com",
+		phone: "234-567-8901",
+		department: "Logistics",
+		onLeaveToday: false,
+		leaves: 4,
+		workDays: 88,
+		gender: "male",
+		joiningDate: "2022-04-05",
+	},
+	{
+		ID: 3,
+		name: "Manager 3",
+		email: "manager1@example.com",
+		phone: "123-456-7890",
+		department: "Pharmacy",
+		onLeaveToday: false,
+		leaves: 4,
+		workDays: 88,
+		gender: "male",
+		joiningDate: "2022-04-05",
+	},
+	{
+		ID: 4,
+		name: "Manager 4",
+		email: "manager2@example.com",
+		phone: "234-567-8901",
+		department: "Logistics",
+		onLeaveToday: false,
+		leaves: 4,
+		workDays: 88,
+		gender: "male",
+		joiningDate: "2022-04-05",
+	},
+];

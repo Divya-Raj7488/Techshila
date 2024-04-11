@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import StepperDialog from '../StoreManager/Stepper'; 
 
 const CurrentOrdersTable = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -50,20 +51,10 @@ const CurrentOrdersTable = () => {
       </TableContainer>
 
       {/* Dialog for displaying details */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Order Details</DialogTitle>
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+        <DialogTitle>Track Order</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {/* Display order details here */}
-            {selectedOrder && (
-              <div>
-                <p>Order id: {selectedOrder.id}</p>
-                <p>Customer Name: {selectedOrder.customerName}</p>
-                <p>Medicine Type: {selectedOrder.medicineType}</p>
-                <p>Order Status: {selectedOrder.status}</p>
-              </div>
-            )}
-          </DialogContentText>
+         <StepperDialog />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Close</Button>

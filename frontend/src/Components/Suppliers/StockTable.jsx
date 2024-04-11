@@ -75,6 +75,8 @@ const StockTable = () => {
 	const fetchedList = useSelector((state) => state.stock);
 	// const medicines = fetchedList.medicinesList;
 
+	// if medicines not in state, would come from specific inventory
+
 	const presentMedicines = medicines.filter(
 		(medicine) => medicine.quantity > 0
 	);
