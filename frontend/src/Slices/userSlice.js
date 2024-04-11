@@ -22,7 +22,6 @@ export const login = createAsyncThunk("user/login", async (userData) => {
 	return axios
 		.post(loginApi, userData)
 		.then((response) => {
-			console.log(response);
 			if (response.status === 200) {
 				localStorage.setItem(
 					"user",
@@ -39,7 +38,6 @@ export const login = createAsyncThunk("user/login", async (userData) => {
 });
 
 export const createUser = createAsyncThunk("user/add", async (userData) => {
-	console.log(userData);
 	return axios
 		.post(signupApi, userData)
 		.then((response) => {

@@ -15,12 +15,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import SupplierRow from "./SupplierRow";
 import { closeSnackbar } from "../../Slices/cartSlice";
-import { suppliers } from "../../dummy";
+import { getSuppliers } from "../../Slices/supplierSlice";
 
 const SupplierTable = () => {
 	const dispatch = useDispatch();
 	const fetchedList = useSelector((state) => state.supplier);
-	// const suppliers = fetchedList.suppliersList;
+	const suppliers = fetchedList.suppliersList;
+
+	useEffect(() => {
+		if (suppliers) dispatch(getSuppliers());
+	}, []);
 
 	useEffect(() => {
 		if (!suppliers) {
@@ -74,7 +78,7 @@ const SupplierTable = () => {
 					</TableHead>
 					<TableBody>
 						{filteredSuppliers?.map((row) => (
-							<SupplierRow key={row.ID} row={row} />
+							<SupplierRow key={row._id} row={row} />
 						))}
 					</TableBody>
 				</Table>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState  } from "react";
+import {useSelector} from 'react-redux'
 import {
 	Collapse,
 	IconButton,
@@ -21,6 +22,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { setSupplierID, setDialogOpen } from "../../Slices/supplierSlice";
 import { addQuantity, removeItem } from "../../Slices/cartSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
+import useGetUser from "../../utils/useGetUser";
+
 
 // import SupplierDialog from "./SupplierDialog";
 
@@ -36,9 +39,24 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 	const handleChange = () => {
 		setChecked((prev) => !prev);
 	};
+	// const userRole = useSelector(state => state.user.role); // Assuming you have access to user role in Redux store
+
+	useGetUser()
+	const [showAddQuantityButton, setShowAddQuantityButton] = useState(true); 
+	 const user = useSelector((state) => state.user.userLoggedIn)
+	 const role = user?.role
+	//const userRole = useSelector(state => state.user.role);
+	 useEffect(() => {
+	 	if(role === 'ceo')
+		{
+			setShowAddQuantityButton(false);
+		  } else {
+			setShowAddQuantityButton(true);
+		  }
+	},[role]);
 	return (
 		<>
-			{!checked && <Button onClick={handleChange}>Add Quantity</Button>}
+			{(showAddQuantityButton && !checked) && <Button onClick={handleChange}>Add Quantity</Button>}
 			{checked && (
 				<Grow
 					in={checked}
@@ -70,7 +88,7 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 								variant="outlined"
 								onClick={() =>
 									addToCart(
-										medicine.ID,
+										medicine._id,
 										medicine.name,
 										supplierId,
 										quantity
@@ -85,7 +103,7 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 									if (quantity != 0)
 										dispatch(
 											removeItem({
-												medicineId: medicine.ID,
+												medicineId: medicine._id,
 												supplierId: supplierId,
 											})
 										);
@@ -120,9 +138,6 @@ const SupplierRow = (props) => {
 			setQuantity(updatedQuantity);
 		}
 	};
-	useEffect(() => {
-		console.log(quantity);
-	}, [quantity]);
 
 	const [open, setOpen] = useState(false);
 	const medicines = row.medicines;
@@ -136,7 +151,7 @@ const SupplierRow = (props) => {
 				}}
 				onClick={(event) => {
 					if (event.target.cellIndex !== 0) {
-						dispatch(setSupplierID(row.ID));
+						dispatch(setSupplierID(row._id));
 						dispatch(setDialogOpen());
 					}
 				}}
@@ -189,77 +204,85 @@ const SupplierRow = (props) => {
 								gutterBottom
 								component="div"
 							>
-								Medicines They Provide
+								{medicines?.length > 0
+									? "Medicines They Provide"
+									: "No Medicines Provided Yet"}
 							</Typography>
-							<Table size="small" aria-label="details">
-								<TableHead>
-									<TableRow>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Name
-										</TableCell>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Type
-										</TableCell>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Price
-										</TableCell>
-										<TableCell
-											sx={{ fontFamily: "Poppins" }}
-										>
-											Expiry Date
-										</TableCell>
-										<TableCell />
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{medicines.map((medicine) => (
-										<React.Fragment key={medicine.ID}>
-											<TableRow>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.name}
-												</TableCell>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.type}
-												</TableCell>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.price}
-												</TableCell>
-												<TableCell
-													sx={{
-														fontFamily: "Poppins",
-													}}
-												>
-													{medicine.expiryDate}
-												</TableCell>
-												<TableCell align="center">
-													<AddQuantityBtn
-														medicine={medicine}
-														supplierId={row.ID}
-													/>
-												</TableCell>
-											</TableRow>
-										</React.Fragment>
-									))}
-								</TableBody>
-							</Table>
+							{medicines && medicines.length > 0 && (
+								<Table size="small" aria-label="details">
+									<TableHead>
+										<TableRow>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Name
+											</TableCell>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Type
+											</TableCell>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Price
+											</TableCell>
+											<TableCell
+												sx={{ fontFamily: "Poppins" }}
+											>
+												Expiry Date
+											</TableCell>
+											<TableCell />
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{medicines.map((medicine) => (
+											<React.Fragment key={medicine._id}>
+												<TableRow>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.name}
+													</TableCell>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.type}
+													</TableCell>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.price}
+													</TableCell>
+													<TableCell
+														sx={{
+															fontFamily:
+																"Poppins",
+														}}
+													>
+														{medicine.expiryDate}
+													</TableCell>
+													<TableCell align="center">
+														<AddQuantityBtn
+															medicine={medicine}
+															supplierId={row._id}
+														/>
+													</TableCell>
+												</TableRow>
+											</React.Fragment>
+										))}
+									</TableBody>
+								</Table>
+							)}
 						</Box>
 					</Collapse>
 				</TableCell>

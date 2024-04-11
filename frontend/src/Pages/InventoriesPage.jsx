@@ -1,5 +1,7 @@
 import { managers, inventories } from "../dummy";
 import React, { useEffect, useState } from "react";
+import useGetUser from "../utils/useGetUser";
+
 import {
 	Button,
 	Dialog,
@@ -56,6 +58,13 @@ const InventoriesPage = () => {
 	// 	(state) => state.inventorie.inventoriesList
 	// );
 	// const managers = useSelector((state) => state.manager.managersList);
+	useGetUser()
+	const user = useSelector((state) => state.user.userLoggedIn)
+	const role = user?.role
+	useEffect(() => {
+		if(role === 'user')
+		window.location.href = '/login';
+	},[role]);
 	return (
 		<Box
 			sx={{
