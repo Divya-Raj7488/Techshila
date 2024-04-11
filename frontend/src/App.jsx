@@ -21,7 +21,7 @@ function App() {
 	return (
 		<>
 			<Router>
-				<Bar />
+				
 				<Routes>
 
 					<Route exact path="/suppliers" element={<SuppliersPage />} />
