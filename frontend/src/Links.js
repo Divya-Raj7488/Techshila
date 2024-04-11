@@ -5,5 +5,5 @@ export const signupApi = `${userApi}signup/`;
 export const supplierApi = `${localhost}suppliers/`;
 export const stockApi = `${localhost}stock/`;
 export const inventoryApi = `${localhost}inventory/`;
-export const managerApi = `${localhost}manager/`;
-export const medicineApi = `${localhost}medicines/`;
+export const managerApi = `${localhost}manager/`; 
+export const medicineApi = `${localhost}medicines/`; 

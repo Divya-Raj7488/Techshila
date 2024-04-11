@@ -1,24 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"; 
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { medicineApi } from "../Links.js";
+import { MedicineApi } from "../Links.js";
 
-export const getMedicines = createAsyncThunk("medicines/get", async () => {
+export const getSuppliers = createAsyncThunk("medicine/get", async () => {
 	return axios
-		.get(medicineApi)
-		.then((response) => {
-			if (response.status === 200) {
-				console.log(response.data);
-				return response.data.medicines;
-			}
-		})
-		.catch((error) => {
-			throw new Error(error.response.data.message || "An error occurred");
-		});
-});
-
-export const getMedicine = createAsyncThunk("medicine/get", async (id) => {
-	return axios
-		.get(`${medicineApi}${id}/`)
+		.get(MedicineApi)
 		.then((response) => {
 			if (response.status === 200) {
 				return response.data;
@@ -29,16 +15,29 @@ export const getMedicine = createAsyncThunk("medicine/get", async (id) => {
 		});
 });
 
-export const createMedicine = createAsyncThunk(
+export const getSupplier = createAsyncThunk("medicine/get", async (id) => {
+	return axios
+		.get(`${MedicineApi}${id}/`)
+		.then((response) => {
+			if (response.status === 200) {
+				return response.data;
+			}
+		})
+		.catch((error) => {
+			throw new Error(error.response.data.message || "An error occurred");
+		});
+});
+
+export const createSupplier = createAsyncThunk(
 	"medicine/add",
 	async (medicineData) => {
 		return axios
-			.post(medicineApi, medicineData)
+			.post(MedicineApi, medicineData)
 			.then((response) => {
 				if (response.status === 200) {
 					return response.data;
 				} else {
-					throw new Error("Invalid medicinename or password");
+					throw new Error("Invalid suppliername or password");
 				}
 			})
 			.catch((error) => {
@@ -49,11 +48,11 @@ export const createMedicine = createAsyncThunk(
 	}
 );
 
-const medicineSlice = createSlice({
+const supplierSlice = createSlice({
 	name: "medicine",
 	initialState: {
 		loading: false,
-		medicinesList: null,
+		medicineList: null,
 		open: false,
 		selectedMedicine: null,
 		error: "",
@@ -84,17 +83,17 @@ const medicineSlice = createSlice({
 				state.selectedMedicine = [];
 				state.error = action.error.message;
 			})
-			.addCase(getMedicines.pending, (state) => {
+			.addCase(getMedicine.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(getMedicines.fulfilled, (state, action) => {
+			.addCase(getMedicine.fulfilled, (state, action) => {
 				state.loading = false;
-				state.medicinesList = action.payload;
+				state.medicineList = action.payload;
 				state.error = "";
 			})
-			.addCase(getMedicines.rejected, (state, action) => {
+			.addCase(getMedicine.rejected, (state, action) => {
 				state.loading = false;
-				state.medicinesList = [];
+				state.medicineList = [];
 				state.error = action.error.message;
 			})
 			.addCase(createMedicine.pending, (state) => {
@@ -102,7 +101,7 @@ const medicineSlice = createSlice({
 			})
 			.addCase(createMedicine.fulfilled, (state, action) => {
 				state.loading = false;
-				state.selectedMedicine = [];
+				state.selectedMedicine =action.payload;
 				state.error = "";
 			})
 			.addCase(createMedicine.rejected, (state, action) => {
