@@ -14,11 +14,20 @@ import {
 	Tab,
 	Tabs,
 	Typography,
+	Dialog,
+	Select,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Chip,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import StockRow from "./StockRow";
 import { closeSnackbar } from "../../Slices/cartSlice";
 import { getStocks } from "../../Slices/stockSlice";
+import { getMedicines } from "../../Slices/medicineSlice";
+import useGetManagerInventory from "../../utils/useGetManagerInventory";
+import { updateMedicineToInventory } from "../../Slices/inventorySlice";
 
 const FilteredTable = ({ filteredStocks }) => {
 	const handleSnackbarClose = () => {
@@ -55,7 +64,7 @@ const FilteredTable = ({ filteredStocks }) => {
 					</TableHead>
 					<TableBody>
 						{filteredStocks?.map((med) => (
-							<StockRow key={med.ID} med={med} />
+							<StockRow key={med?._id} med={med} />
 						))}
 					</TableBody>
 				</Table>
@@ -71,8 +80,11 @@ const FilteredTable = ({ filteredStocks }) => {
 };
 
 const StockTable = ({ medicines }) => {
+	const user = useSelector((state) => state.user.userLoggedIn);
 	const dispatch = useDispatch();
-	const fetchedList = useSelector((state) => state.stock);
+	if (user.role === "manager") {
+		useGetManagerInventory();
+	}
 
 	const presentMedicines = medicines?.filter(
 		(medicine) => medicine.quantity > 0
@@ -83,27 +95,51 @@ const StockTable = ({ medicines }) => {
 	const outOfStockMedicines = medicines?.filter(
 		(medicine) => medicine.quantity === 0
 	);
-
-	useEffect(() => {
-		if (!medicines) {
-			dispatch(getStocks());
-		}
-	}, []);
+	const medicineOptions = useSelector(
+		(state) => state.medicine.medicinesList
+	);
 
 	const [searchTerm, setSearchTerm] = useState("");
-
+	const [open, setOpen] = useState(false);
+	const handleClose = () => {
+		setOpen(false);
+	};
+	const handleOpen = () => {
+		setOpen(true);
+		dispatch(getMedicines());
+	};
 	const handleSearchChange = (event) => {
 		setSearchTerm(event.target.value.toLowerCase());
 	};
 
-	const filteredStocks = medicines?.filter((stock) =>
-		stock.name.toLowerCase().includes(searchTerm)
-	);
 	const [value, setValue] = useState(0);
-
+	const [selectedMedicines, setSelectedMedicines] = useState([]);
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+	const inventoryId =
+		user.role === "ceo"
+			? useSelector((state) => state.inventory?.selectedInventory?._id)
+			: useSelector(
+					(state) => state.inventory?.selectedInventory[0]?._id
+			  );
+
+	const getMedicineName = (medicineId) => {
+		const medicine = medicineOptions.find(
+			(medicine) => medicine._id === medicineId
+		);
+		return medicine ? medicine.name : "";
+	};
+
+	const handleAdd = () => {
+		dispatch(
+			updateMedicineToInventory({
+				medicineIds: selectedMedicines,
+				inventoryId: inventoryId,
+			})
+		);
+	};
+
 	return (
 		<Box>
 			<Box>
@@ -134,13 +170,68 @@ const StockTable = ({ medicines }) => {
 			<Typography component="div" hidden={value !== 2}>
 				<FilteredTable filteredStocks={outOfStockMedicines} />
 			</Typography>
-			<Button
-				variant="contained"
-				sx={{ m: 2, marginLeft: "auto" }}
-				// onClick={ postOrder}
-			>
-				Send Order
-			</Button>
+			{user.role !== "ceo" ? (
+				<Button
+					variant="contained"
+					sx={{ m: 2, marginLeft: "auto" }}
+					// onClick={ postOrder}
+				>
+					Send Order
+				</Button>
+			) : (
+				<>
+					<Button
+						variant="contained"
+						sx={{ m: 2 }}
+						onClick={handleOpen}
+					>
+						Add medicines
+					</Button>
+					<Dialog open={open} onClose={handleClose}>
+						<Box p={2} minWidth={"30rem"}>
+							<FormControl fullWidth sx={{ mt: 2 }}>
+								<InputLabel>Medicine</InputLabel>
+								<Select
+									multiple
+									value={selectedMedicines}
+									label="Medicine"
+									onChange={(e) =>
+										setSelectedMedicines(e.target.value)
+									}
+									renderValue={(selected) => (
+										<div>
+											{selected.map((value) => (
+												<Chip
+													key={value}
+													label={getMedicineName(
+														value
+													)}
+												/>
+											))}
+										</div>
+									)}
+								>
+									{medicineOptions?.map((medicine) => (
+										<MenuItem
+											key={medicine._id}
+											value={medicine._id}
+										>
+											{medicine.name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<Button
+								variant="contained"
+								sx={{ m: 2, marginLeft: "auto" }}
+								onClick={handleAdd}
+							>
+								Add
+							</Button>
+						</Box>
+					</Dialog>
+				</>
+			)}
 		</Box>
 	);
 };

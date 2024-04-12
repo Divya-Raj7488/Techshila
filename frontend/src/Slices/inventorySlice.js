@@ -20,11 +20,29 @@ export const getInventories = createAsyncThunk(
 	}
 );
 
-export const updateManager = createAsyncThunk(
-	"inventory/updateManager",
+export const updateManagerToInventory = createAsyncThunk(
+	"inventory/updateManagerToInventory",
 	async (email) => {
 		return axios
 			.put(`${inventoryApi}`, email)
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				}
+			})
+			.catch((error) => {
+				throw new Error(
+					error.response.data.message || "An error occurred"
+				);
+			});
+	}
+);
+
+export const updateMedicineToInventory = createAsyncThunk(
+	"inventory/updateMedicineToInventory",
+	async (data) => {
+		return axios
+			.put(`${inventoryApi}`, data)
 			.then((response) => {
 				if (response.status === 200) {
 					return response.data;
@@ -99,7 +117,7 @@ const inventorySlice = createSlice({
 			})
 			.addCase(getInventory.fulfilled, (state, action) => {
 				state.loading = false;
-				state.selectedInventory = action.payload["stores"][0];
+				state.selectedInventory = action.payload["stores"];
 				state.inventoryMedicines = action.payload["medicines"];
 				state.error = "";
 			})
@@ -114,7 +132,7 @@ const inventorySlice = createSlice({
 			.addCase(getInventories.fulfilled, (state, action) => {
 				state.loading = false;
 				state.inventorysList = action.payload.stores;
-				state.inventoryMedicines = action.payload.medicines;
+				// state.inventoryMedicines = action.payload.medicines;
 				state.error = "";
 			})
 			.addCase(getInventories.rejected, (state, action) => {
@@ -135,15 +153,28 @@ const inventorySlice = createSlice({
 				state.selectedInventory = [];
 				state.error = action.error.message;
 			})
-			.addCase(updateManager.pending, (state) => {
+			.addCase(updateManagerToInventory.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(updateManager.fulfilled, (state, action) => {
+			.addCase(updateManagerToInventory.fulfilled, (state, action) => {
 				state.loading = false;
 				state.selectedInventory = [];
 				state.error = "";
 			})
-			.addCase(updateManager.rejected, (state, action) => {
+			.addCase(updateManagerToInventory.rejected, (state, action) => {
+				state.loading = false;
+				state.selectedInventory = [];
+				state.error = action.error.message;
+			})
+			.addCase(updateMedicineToInventory.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(updateMedicineToInventory.fulfilled, (state, action) => {
+				state.loading = false;
+				state.selectedInventory = [];
+				state.error = "";
+			})
+			.addCase(updateMedicineToInventory.rejected, (state, action) => {
 				state.loading = false;
 				state.selectedInventory = [];
 				state.error = action.error.message;

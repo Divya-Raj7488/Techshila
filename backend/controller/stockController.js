@@ -2,6 +2,20 @@ const Stock = require("../models/stock");
 const Medicine = require("../models/medicine");
 const Supplier = require("../models/supplier");
 
+const getStock = async (req, res) => {
+	const { userId } = req.params;
+
+	try {
+		const stock = await Stock.find({ userId })
+			.populate("stockOrderDetails.supplierID")
+			.populate("stockOrderDetails.medicineID");
+		res.status(200).json({ stock });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Failed to fetch stock details" });
+	}
+};
+
 const createStocks = async (req, res) => {
 	const { stocksData, userId, totalAmount } = req.body;
 
@@ -69,4 +83,4 @@ const calculateTotalPrice = async (req, res) => {
 	}
 };
 
-module.exports = { calculateTotalPrice, createStocks };
+module.exports = { calculateTotalPrice, createStocks, getStock };

@@ -11,10 +11,11 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { setDialogOpen } from "../../Slices/inventorySlice";
+import { resetInventory, setDialogOpen } from "../../Slices/inventorySlice";
 import ManagerCard from "./ManagerCard";
 import StockTable from "../Suppliers/StockTable";
 import CurrentOrdersTable from "../StoreManager/orderTable";
+import { getMedicine } from "../../Slices/medicineSlice";
 
 const Transition = forwardRef(function Transition(props, ref) {
 	return <Slide direcxtion="up" ref={ref} {...props} />;
@@ -26,13 +27,19 @@ const InventoryDialog = () => {
 	const inventory = useSelector((state) => state.inventory.selectedInventory);
 	const managers = inventory?.manager;
 	const inventoryMedicines = useSelector(
-		(state) => state.inventory.inventoryMedicines
+		(state) => state.medicine.selectedMedicine
 	);
 	const paramRef = useRef();
 
 	const handleClose = () => {
+		console.log("$$$$$$$$");
 		dispatch(setDialogOpen());
+		dispatch(resetInventory());
 	};
+
+	useEffect(() => {
+		if (inventory?._id) dispatch(getMedicine(inventory?._id));
+	}, [inventory]);
 
 	return (
 		<Dialog
@@ -57,7 +64,7 @@ const InventoryDialog = () => {
 						variant="h6"
 						component="div"
 					>
-						{inventory?.name}
+						{inventory?.inventoryName}
 					</Typography>
 				</Toolbar>
 			</AppBar>
@@ -87,7 +94,7 @@ const InventoryDialog = () => {
 				</Typography>
 
 				{/* Render the OrderTable component */}
-				<CurrentOrdersTable inventoryId={inventory._id} />
+				<CurrentOrdersTable inventoryId={inventory?._id} />
 			</Box>
 		</Dialog>
 	);

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"; 
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { medicineApi } from "../Links.js";
 
@@ -65,7 +65,7 @@ const medicineSlice = createSlice({
 			state.open = !state.open;
 		},
 		resetMedicine: (state) => {
-			state.selectedMedicine = null;
+			state.selectedMedicine = [];
 		},
 	},
 	extraReducers: (builder) => {
@@ -75,7 +75,7 @@ const medicineSlice = createSlice({
 			})
 			.addCase(getMedicine.fulfilled, (state, action) => {
 				state.loading = false;
-				state.selectedMedicine = action.payload;
+				state.selectedMedicine = action.payload["medicines"];
 				state.error = "";
 			})
 			.addCase(getMedicine.rejected, (state, action) => {

@@ -21,7 +21,6 @@ import { setManagerID } from "../../Slices/managerSlice";
 const InventoryRow = (props) => {
 	const dispatch = useDispatch();
 	const { row } = props;
-	console.log(row);
 	const [open, setOpen] = useState(false);
 	return (
 		<React.Fragment>
@@ -132,7 +131,7 @@ const InventoryRow = (props) => {
 								</TableHead>
 								<TableBody>
 									{row.manager?.map((manager) => (
-										<TableRow key={manager.ID}>
+										<TableRow key={manager._id}>
 											<TableCell />
 											<TableCell
 												sx={{ fontFamily: "Poppins" }}
@@ -141,7 +140,7 @@ const InventoryRow = (props) => {
 											>
 												{
 													manager.joiningDate
-														.trim()
+														?.trim()
 														.split("T")[0]
 												}
 											</TableCell>

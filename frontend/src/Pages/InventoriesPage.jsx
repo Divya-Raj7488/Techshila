@@ -5,6 +5,7 @@ import {
 	Button,
 	Dialog,
 	DialogActions,
+	Chip,
 	DialogContent,
 	DialogTitle,
 	MenuItem,
@@ -20,9 +21,10 @@ import { getManagers } from "../Slices/managerSlice";
 import {
 	createInventory,
 	getInventories,
-	updateManager,
+	updateManagerToInventory,
 } from "../Slices/inventorySlice";
 import InventoryTable from "../Components/Inventory/InventoryTable";
+import { getMedicines, resetMedicine } from "../Slices/medicineSlice";
 
 const IndianStates = [
 	"Andhra Pradesh",
@@ -58,41 +60,81 @@ const InventoriesPage = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getManagers());
-		dispatch(getInventories());
+		// dispatch(getInventories());
 	}, []);
 
 	const [open, setOpen] = useState(false);
-	const [selectedManager, setSelectedManager] = useState();
-	const [selectedInventory, setSelectedInventory] = useState();
+	const [selectedManagers, setSelectedManagers] = useState([]);
+	const [selectedMedicines, setSelectedMedicines] = useState([]);
+	const [inventoryName, setInventoryName] = useState("");
 	const [address, setAddress] = useState({
 		houseName: "",
 		locality: "",
 		city: "",
-		coordinateLongitude: "",
-		coordinateLatitude: "",
+		state: "",
 		pincode: "",
+		coordinates: {
+			latitude: 0.0,
+			longitude: 0.0,
+		},
+		country: "",
 	});
-	const [medicineName, setMedicineName] = useState("");
+
+	const handleCoordinateChange = (key, value) => {
+		setAddress({
+			...address,
+			coordinates: {
+				...address.coordinates,
+				[key]: value,
+			},
+		});
+	};
 
 	const handleClickOpen = () => {
+		dispatch(getMedicines());
 		setOpen(true);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
+		dispatch(resetMedicine());
 	};
 
 	const handleSave = () => {
-		const data = {
-			managerId: selectedManager,
-			inventoryId: selectedInventory,
+		// const data = {
+		// 	managerId: selectedManagers,
+		// 	inventoryId: selectedInventory,
+		// };
+		// dispatch(updateManagerToInventory(data));
+		const inventoryData = {
+			inventoryName: inventoryName,
+			managerIds: selectedManagers,
+			address: address,
+			medicines: selectedMedicines,
 		};
-		dispatch(updateManager(data));
+		console.log(inventoryData);
+		dispatch(createInventory(inventoryData)).then(() => {
+			dispatch(getInventories());
+		});
 		handleClose();
 	};
+
 	const inventories = useSelector((state) => state.inventory.inventorysList);
 	const managers = useSelector((state) => state.manager.managersList);
 	useGetUser();
+	const getManagerName = (managerId) => {
+		const manager = managers.find((manager) => manager._id === managerId);
+		return manager ? manager.fullName : "";
+	};
+
+	const getMedicineName = (medicineId) => {
+		const medicine = medicines.find(
+			(medicine) => medicine._id === medicineId
+		);
+		return medicine ? medicine.name : "";
+	};
+
+	const medicines = useSelector((state) => state.medicine.medicinesList);
 	const user = useSelector((state) => state.user.userLoggedIn);
 	const role = user?.role;
 	useEffect(() => {
@@ -101,7 +143,7 @@ const InventoriesPage = () => {
 
 	useEffect(() => {
 		dispatch(getManagers());
-		if (user?.email) dispatch(getInventories({ email: user?.email }));
+		// if (user?.email) dispatch(getInventories({ email: user?.email }));
 	}, [user]);
 
 	return (
@@ -129,14 +171,33 @@ const InventoriesPage = () => {
 				<Dialog maxWidth="md" open={open} onClose={handleClose}>
 					<DialogTitle>Add an Inventory</DialogTitle>
 					<DialogContent>
+						<TextField
+							label="Inventory Name"
+							value={inventoryName}
+							onChange={(e) => setInventoryName(e.target.value)}
+							fullWidth
+							margin="normal"
+							sx={{ mt: 2 }}
+						/>
 						<FormControl fullWidth sx={{ mt: 2 }}>
 							<InputLabel>Manager</InputLabel>
 							<Select
-								value={selectedManager}
+								multiple
+								value={selectedManagers}
 								label="Manager"
 								onChange={(e) =>
-									setSelectedManager(e.target.value)
+									setSelectedManagers(e.target.value)
 								}
+								renderValue={(selected) => (
+									<div>
+										{selected.map((value) => (
+											<Chip
+												key={value}
+												label={getManagerName(value)}
+											/>
+										))}
+									</div>
+								)}
 							>
 								{managers?.map((manager) => (
 									<MenuItem
@@ -148,25 +209,7 @@ const InventoriesPage = () => {
 								))}
 							</Select>
 						</FormControl>
-						<FormControl fullWidth sx={{ mt: 2 }}>
-							<InputLabel>Inventory</InputLabel>
-							<Select
-								value={selectedInventory}
-								label="Inventory"
-								onChange={(e) =>
-									setSelectedInventory(e.target.value)
-								}
-							>
-								{inventories?.map((inventory) => (
-									<MenuItem
-										key={inventory._id}
-										value={inventory._id}
-									>
-										{inventory.inventoryName}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
+
 						<Box sx={{ mt: 2 }}>
 							<Typography variant="subtitle1">Address</Typography>
 							<TextField
@@ -208,24 +251,24 @@ const InventoriesPage = () => {
 
 							<TextField
 								label="Location Coordinate Longitude"
-								value={address.coordinateLongitude}
+								value={address.coordinates.longitude}
 								onChange={(e) =>
-									setAddress({
-										...address,
-										coordinateLongitude: e.target.value,
-									})
+									handleCoordinateChange(
+										"longitude",
+										e.target.value
+									)
 								}
 								fullWidth
 								margin="normal"
 							/>
 							<TextField
 								label="Location Coordinate Latitude"
-								value={address.coordinateLatitude}
+								value={address.coordinates.latitude}
 								onChange={(e) =>
-									setAddress({
-										...address,
-										coordinateLatitude: e.target.value,
-									})
+									handleCoordinateChange(
+										"latitude",
+										e.target.value
+									)
 								}
 								fullWidth
 								margin="normal"
@@ -251,6 +294,18 @@ const InventoriesPage = () => {
 								</Select>
 							</FormControl>
 							<TextField
+								label="Country"
+								value={address.country}
+								onChange={(e) =>
+									setAddress({
+										...address,
+										country: e.target.value,
+									})
+								}
+								fullWidth
+								margin="normal"
+							/>
+							<TextField
 								label="Pincode"
 								value={address.pincode}
 								onChange={(e) =>
@@ -263,14 +318,36 @@ const InventoriesPage = () => {
 								margin="normal"
 							/>
 						</Box>
-						<TextField
-							label="Medicine Name"
-							value={medicineName}
-							onChange={(e) => setMedicineName(e.target.value)}
-							fullWidth
-							margin="normal"
-							sx={{ mt: 2 }}
-						/>
+						<FormControl fullWidth sx={{ mt: 2 }}>
+							<InputLabel>Medicine</InputLabel>
+							<Select
+								multiple
+								value={selectedMedicines}
+								label="Medicine"
+								onChange={(e) =>
+									setSelectedMedicines(e.target.value)
+								}
+								renderValue={(selected) => (
+									<div>
+										{selected.map((value) => (
+											<Chip
+												key={value}
+												label={getMedicineName(value)}
+											/>
+										))}
+									</div>
+								)}
+							>
+								{medicines?.map((medicine) => (
+									<MenuItem
+										key={medicine._id}
+										value={medicine._id}
+									>
+										{medicine.name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={handleClose}>Cancel</Button>

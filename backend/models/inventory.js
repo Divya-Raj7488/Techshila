@@ -75,6 +75,17 @@ const InventorySchema = new mongoose.Schema({
 				type: Number,
 				required: true,
 			},
+			coordinates: {
+				type: {
+					latitude: Number,
+					longitude: Number,
+				},
+				required: true,
+				default: {
+					latitude: 0.0,
+					longitude: 0.0,
+				},
+			},
 		},
 	],
 	medicines: [

@@ -7,7 +7,7 @@ import {
 	Grow,
 	Box,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import AddIcon from "@mui/icons-material/Add";
 import { addQuantity, removeItem } from "../../Slices/cartSlice";
@@ -110,7 +110,8 @@ const StockRow = ({ med }) => {
 	};
 
 	const [open, setOpen] = useState(false);
-
+	const user = useSelector((state) => state.user.userLoggedIn);
+	const dispatch = useDispatch();
 	return (
 		<React.Fragment key={med.ID}>
 			<TableRow>
@@ -156,12 +157,11 @@ const StockRow = ({ med }) => {
 				>
 					{med.price}
 				</TableCell>
-				<TableCell align="center">
-					<AddQuantityBtn med={med} supplierId={med.sID} />
-				</TableCell>
-				{/* {user.ceo && <TableCell align="center">
-					<AddQuantityBtn med={med} supplierId={med.sID} />
-				</TableCell>} */}
+				{user?.role === "manager" && (
+					<TableCell align="center">
+						<AddQuantityBtn med={med} supplierId={med.sID} />
+					</TableCell>
+				)}
 			</TableRow>
 		</React.Fragment>
 	);

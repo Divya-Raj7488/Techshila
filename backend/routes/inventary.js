@@ -5,12 +5,14 @@ const {
 	addInventory,
 	updateMedicines,
 	getStore,
-	updateAssignment,
+	assignManagerToInventory,
+	assignMedicinesToInventory,
 } = require("../controller/inventryController");
 
 router.route("/").post(addInventory);
-router.route("/").put(updateAssignment);
+router.route("/").put(assignManagerToInventory);
 // router.route("/").get(verifyjwt, getStore);
 router.route("/get").post(getStore);
 router.route("/add-medicines").put(verifyjwt, updateMedicines);
+router.route("/medicines").put(assignMedicinesToInventory);
 module.exports = router;

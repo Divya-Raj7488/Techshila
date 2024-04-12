@@ -76,7 +76,7 @@ const InventoryTable = () => {
 					</TableHead>
 					<TableBody>
 						{filteredInventories?.map((row) => (
-							<InventoryRow key={row.ID} row={row} />
+							<InventoryRow key={row._id} row={row} />
 						))}
 					</TableBody>
 				</Table>

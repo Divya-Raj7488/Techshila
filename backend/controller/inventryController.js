@@ -3,8 +3,45 @@ const Medicine = require("../models/medicine");
 const InventoryItem = require("../models/inventoryItem");
 
 const User = require("../models/user");
+const mongoose = require("mongoose");
 
 const getStore = async (req, res) => {
+	const { email } = req.body;
+
+	try {
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res.status(401).json({ message: "Unauthorized" });
+		}
+
+		let storeData;
+
+		if (user.role === "ceo" || user.role === "manager") {
+			if (user.role === "ceo") {
+				storeData = await Inventory.find()
+					.populate("manager")
+					.populate("medicines");
+			} else {
+				storeData = await Inventory.find({
+					manager: user._id,
+				});
+			}
+			return res.status(200).json({
+				message: "Here is your store",
+				stores: storeData,
+			});
+		} else {
+			return res.status(401).json({ message: "Unauthorized" });
+		}
+	} catch (error) {
+		console.error(error);
+		return res
+			.status(500)
+			.json({ message: "Some error occurred. Please try again" });
+	}
+};
+
+const getInventoryMedQuant = async (req, res) => {
 	const { email } = req.body;
 
 	try {
@@ -68,21 +105,18 @@ const getStore = async (req, res) => {
 };
 
 const addInventory = async (req, res) => {
-	const { inventoryName, managerId, address, medicines } = req.body;
+	const { inventoryName, managerIds, address, medicines } = req.body;
 
 	try {
-		// Create a new inventory
 		const newInventory = new Inventory({
 			inventoryName: inventoryName,
-			manager: managerId,
+			manager: managerIds.map((id) => new mongoose.Types.ObjectId(id)),
 			address: address,
 			medicines: medicines,
 		});
 
-		// Save the new inventory
 		await newInventory.save();
 
-		// Update the inventoryIds of the medicines
 		for (const medicineId of medicines) {
 			await Medicine.findByIdAndUpdate(medicineId, {
 				$push: { inventories: newInventory._id },
@@ -99,13 +133,37 @@ const addInventory = async (req, res) => {
 	}
 };
 
-const updateAssignment = async (req, res) => {
-	const { managerId, inventoryId } = req.body;
+const assignManagerToInventory = async (req, res) => {
+	const { managerIds, inventoryId } = req.body;
 
 	try {
 		const updatedInventory = await Inventory.findByIdAndUpdate(
 			inventoryId,
-			{ $push: { manager: managerId } },
+			{ $addToSet: { manager: { $each: managerIds } } },
+			{ new: true }
+		);
+
+		if (!updatedInventory) {
+			return res.status(404).json({ message: "Inventory not found" });
+		}
+
+		return res.status(200).json({
+			message: "Assignment updated",
+			inventory: updatedInventory,
+		});
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: "Failed to update assignment" });
+	}
+};
+
+const assignMedicinesToInventory = async (req, res) => {
+	const { medicineIds, inventoryId } = req.body;
+
+	try {
+		const updatedInventory = await Inventory.findByIdAndUpdate(
+			inventoryId,
+			{ $addToSet: { manager: { $each: medicineIds } } },
 			{ new: true }
 		);
 
@@ -155,4 +213,10 @@ const updateMedicines = async (req, res) => {
 	}
 };
 
-module.exports = { addInventory, updateMedicines, getStore, updateAssignment };
+module.exports = {
+	addInventory,
+	updateMedicines,
+	getStore,
+	assignManagerToInventory,
+	assignMedicinesToInventory,
+};

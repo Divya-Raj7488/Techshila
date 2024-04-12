@@ -1,3 +1,4 @@
+const InventoryItem = require("../models/inventoryItem");
 const medicineModel = require("../models/medicine");
 
 const getAllMedicines = async (req, res) => {
@@ -34,4 +35,41 @@ const addMedicine = async (req, res) => {
 	}
 };
 
-module.exports = { getAllMedicines, addMedicine };
+const getMedicinesByInventoryId = async (req, res) => {
+	const { inventoryId } = req.params;
+
+	try {
+		const medicines = await medicineModel.find({
+			inventories: inventoryId,
+		});
+
+		const medQuant = [];
+
+		for (const medicine of medicines) {
+			const inventoryItem = await InventoryItem.findOne({
+				inventory: inventoryId,
+				medicine: medicine._id,
+			});
+			if (inventoryItem) {
+				const updatedMedicine = {
+					...medicine.toObject(),
+					quantity: inventoryItem.quantity,
+				};
+				medQuant.push(updatedMedicine);
+			} else {
+				const updatedMedicine = {
+					...medicine.toObject(),
+					quantity: 0,
+				};
+				medQuant.push(updatedMedicine);
+			}
+		}
+
+		res.status(200).json({ medicines: medQuant });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Failed to fetch medicines" });
+	}
+};
+
+module.exports = { getAllMedicines, addMedicine, getMedicinesByInventoryId };

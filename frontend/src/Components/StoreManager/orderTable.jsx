@@ -29,11 +29,11 @@ const CurrentOrdersTable = () => {
 	const user = useSelector((state) => state.user.userLoggedIn);
 
 	useEffect(() => {
-		if (user?.email) dispatch(getInventory({ email: user.email }));
+		if (user?.email && user.role !== "ceo")
+			dispatch(getInventory({ email: user.email }));
 	}, [user]);
 
 	useEffect(() => {
-		console.log(inventory);
 		if (inventory?._id) dispatch(getInventoryOrders(inventory?._id));
 	}, [inventory]);
 

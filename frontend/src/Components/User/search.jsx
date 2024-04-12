@@ -41,10 +41,6 @@ const Search = () => {
 		setQuantities(filteredData.map(() => 0));
 	}, [filteredData]);
 
-	useEffect(() => {
-		console.log(quantities);
-		console.log(items);
-	}, [quantities, items]);
 	const medicines = useSelector((state) => state.medicine?.medicinesList);
 
 	useEffect(() => {
