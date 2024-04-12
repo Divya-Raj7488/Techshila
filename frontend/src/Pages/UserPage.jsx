@@ -7,7 +7,11 @@ import useGetUser from "../utils/useGetUser";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import { sendOrder } from "../Slices/orderSlice";
+
 //import LocationComponent from '../Components/User/currentLocation';
+
+// import LocationComponent from '../Components/User/currentLocation';
+
 
 const UserPage = () => {
 	useGetUser();
@@ -55,7 +59,11 @@ const UserPage = () => {
 					Proceed to Cart
 				</Button>
 			)}
+
 		{/* <LocationComponent /> */}
+
+			{/* <LocationComponent /> */}
+
 		</Box>
 		
 	);
