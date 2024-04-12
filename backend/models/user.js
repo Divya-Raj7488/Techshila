@@ -84,7 +84,30 @@ const userSchema = new mongoose.Schema({
 			},
 		},
 	],
+	joiningDate: {
+		type: Date,
+		default: Date.now(),
+	},
+	gender: {
+		type: String,
+		enum: ["male", "female", "other"],
+	},
+	phone: {
+		type: String,
+		default: "",
+	},
+	department: {
+		type: String,
+		default: "",
+	},
+	workdays: {
+		type: Number,
+		default: 0,
+	},
+	leavedays: {
+		type: Number,
+		default: 0,
+	},
 });
 
-const userModel = mongoose.model("User", userSchema);
-module.exports = userModel;
+module.exports = mongoose.model("User", userSchema);

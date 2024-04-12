@@ -14,10 +14,11 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use("/user", require("./routes/userRoutes"));
 app.use("/order", require("./routes/orderRoutes"));
-app.use("/inventary", require("./routes/inventary"));
+app.use("/inventory", require("./routes/inventary"));
 // app.use("/stocks", require("./routes/stockRoutes"));
 app.use("/suppliers", require("./routes/supplierRoutes"));
 app.use("/medicines", require("./routes/medicineRoutes"));
+app.use("/medQuant", require("./routes/medQuantRoutes"));
 
 app.listen(PORT, () => {
 	console.log(`app is running on port ${PORT}`);

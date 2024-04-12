@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SupplierTable from "../Components/Suppliers/SupplierTable";
-import {useSelector} from 'react-redux'
 
 import { Button, Dialog, DialogTitle, Typography, Box } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +9,7 @@ import useGetUser from "../utils/useGetUser";
 import { getSummary } from "../Slices/cartSlice";
 import OrderSummaryDialog from "../Components/Cart/OrderSummaryDialog";
 import { setOrderDialog } from "../Slices/cartSlice";
- 
+
 const SuppliersPage = () => {
 	const dispatch = useDispatch();
 	useGetUser();
@@ -36,23 +35,19 @@ const SuppliersPage = () => {
 	};
 	//for hiding from user.
 	const [showSendOrderButton, setShowSendOrderButton] = useState(true); // State to control the visibility of the "Send Order" button
-  
-useGetUser()
-	const user = useSelector((state) => state.user.userLoggedIn)
-	const role = user?.role
+
+	useGetUser();
+	const user = useSelector((state) => state.user.userLoggedIn);
+	const role = user?.role;
 	useEffect(() => {
-		if(role === 'user')
-		window.location.href = '/user';
-	},[role]);
+		if (role === "user") window.location.href = "/user";
+	}, [role]);
 
-    useEffect(() => {
-		
-    
-
-    // Logic to hide the "Send Order" button if the user role is CEO
-    const showSendOrderButton = role !== 'ceo';
-    setShowSendOrderButton(showSendOrderButton);
-	},[role]);
+	useEffect(() => {
+		// Logic to hide the "Send Order" button if the user role is CEO
+		const showSendOrderButton = role !== "ceo";
+		setShowSendOrderButton(showSendOrderButton);
+	}, [role]);
 
 	return (
 		<Box
