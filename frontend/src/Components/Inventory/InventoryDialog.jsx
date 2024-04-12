@@ -15,24 +15,26 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { setDialogOpen } from "../../Slices/inventorySlice";
 import ManagerCard from "./ManagerCard";
-import { managers } from "../../dummy";
 import StockTable from "../Suppliers/StockTable";
+import CurrentOrdersTable from "../StoreManager/orderTable";
+
+const Transition = forwardRef(function Transition(props, ref) {
+	return <Slide direcxtion="up" ref={ref} {...props} />;
+});
 
 const InventoryDialog = () => {
 	const dispatch = useDispatch();
 	const open = useSelector((state) => state.inventory.open);
-	// const managers = useSelector((state) => state.manager.managersList);
-	// const inventory = useSelector((state) => state.inventory.selectedInventory);
+	const managers = useSelector((state) => state.manager.managersList);
 	const inventory = useSelector((state) => state.inventory.selectedInventory);
+	const inventoryMedicines = useSelector(
+		(state) => state.inventory.inventoryMedicines
+	);
 	const paramRef = useRef();
 
 	const handleClose = () => {
 		dispatch(setDialogOpen());
 	};
-
-	const Transition = forwardRef(function Transition(props, ref) {
-		return <Slide direcxtion="up" ref={ref} {...props} />;
-	});
 
 	return (
 		<Dialog
@@ -80,7 +82,14 @@ const InventoryDialog = () => {
 				</Typography>
 			</Box>
 			<Box p={2}>
-				<StockTable />
+				<StockTable medicines={inventoryMedicines} />
+
+				<Typography p={3} variant="h4" fontFamily={"Poppins"}>
+					Current Orders
+				</Typography>
+
+				{/* Render the OrderTable component */}
+				<CurrentOrdersTable />
 			</Box>
 		</Dialog>
 	);

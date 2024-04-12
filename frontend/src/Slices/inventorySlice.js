@@ -2,18 +2,41 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { inventoryApi } from "../Links.js";
 
-export const getInventories = createAsyncThunk("inventorys/get", async () => {
-	return axios
-		.get(inventoryApi)
-		.then((response) => {
-			if (response.status === 200) {
-				return response.data;
-			}
-		})
-		.catch((error) => {
-			throw new Error(error.response.data.message || "An error occurred");
-		});
-});
+export const getInventories = createAsyncThunk(
+	"inventorys/get",
+	async (email) => {
+		return axios
+			.post(`${inventoryApi}get`, email)
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				}
+			})
+			.catch((error) => {
+				throw new Error(
+					error.response.data.message || "An error occurred"
+				);
+			});
+	}
+);
+
+export const updateManager = createAsyncThunk(
+	"inventory/updateManager",
+	async (email) => {
+		return axios
+			.put(`${inventoryApi}`, email)
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				}
+			})
+			.catch((error) => {
+				throw new Error(
+					error.response.data.message || "An error occurred"
+				);
+			});
+	}
+);
 
 export const getInventory = createAsyncThunk("inventory/get", async (id) => {
 	return axios
@@ -53,6 +76,7 @@ const inventorySlice = createSlice({
 	initialState: {
 		loading: false,
 		inventorysList: null,
+		inventoryMedicines: null,
 		open: false,
 		selectedInventory: null,
 		error: "",
@@ -88,7 +112,8 @@ const inventorySlice = createSlice({
 			})
 			.addCase(getInventories.fulfilled, (state, action) => {
 				state.loading = false;
-				state.inventorysList = action.payload;
+				state.inventorysList = action.payload.stores;
+				state.inventoryMedicines = action.payload.medicines;
 				state.error = "";
 			})
 			.addCase(getInventories.rejected, (state, action) => {
@@ -105,6 +130,19 @@ const inventorySlice = createSlice({
 				state.error = "";
 			})
 			.addCase(createInventory.rejected, (state, action) => {
+				state.loading = false;
+				state.selectedInventory = [];
+				state.error = action.error.message;
+			})
+			.addCase(updateManager.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(updateManager.fulfilled, (state, action) => {
+				state.loading = false;
+				state.selectedInventory = [];
+				state.error = "";
+			})
+			.addCase(updateManager.rejected, (state, action) => {
 				state.loading = false;
 				state.selectedInventory = [];
 				state.error = action.error.message;

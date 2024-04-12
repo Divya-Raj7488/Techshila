@@ -15,6 +15,8 @@ import UserPage from "./Pages/UserPage"
 import UserProfile from "./Pages/UserProfile"
 import Summary from "./Pages/OrderSummary"
 import AddMedicine from "./Pages/AddMedicines";
+import OrderStatus from "./Pages/OrderStatus";
+
 function App() {
 	const [count, setCount] = useState(0);
 
@@ -64,6 +66,11 @@ function App() {
 						exact
 						path="/store-manager"
 						element={<StoreManagerPage />}
+					/>
+					<Route
+						exact
+						path="/orderstatus"
+						element={<OrderStatus />}
 					/>
 				
 					

@@ -1,5 +1,6 @@
-import { managers, inventories } from "../dummy";
 import React, { useEffect, useState } from "react";
+import useGetUser from "../utils/useGetUser";
+
 import {
 	Button,
 	Dialog,
@@ -15,7 +16,11 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getManagers } from "../Slices/managerSlice";
-import { createInventory, getInventories } from "../Slices/inventorySlice";
+import {
+	createInventory,
+	getInventories,
+	updateManager,
+} from "../Slices/inventorySlice";
 import InventoryTable from "../Components/Inventory/InventoryTable";
 
 const InventoriesPage = () => {
@@ -37,25 +42,28 @@ const InventoriesPage = () => {
 	const [selectedManager, setSelectedManager] = useState();
 	const [selectedInventory, setSelectedInventory] = useState();
 
-		const handleSave = () => {
-		// dispatch(
-		// 	createInventory({
-
-		// 	})
-		// )
-		// 	.unwrap()
-		// 	.then((response) => {
-		// 		dispatch(getInventorys());
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error("Failed to create the inventory:", error);
-		// 	});
+	const handleSave = () => {
+		const data = {
+			managerId: selectedManager,
+			inventoryId: selectedInventory,
+		};
+		dispatch(updateManager(data));
 		handleClose();
 	};
-	// const inventories = useSelector(
-	// 	(state) => state.inventorie.inventoriesList
-	// );
-	// const managers = useSelector((state) => state.manager.managersList);
+	const inventories = useSelector((state) => state.inventory.inventorysList);
+	const managers = useSelector((state) => state.manager.managersList);
+	useGetUser();
+	const user = useSelector((state) => state.user.userLoggedIn);
+	const role = user?.role;
+	useEffect(() => {
+		if (role === "user") window.location.href = "/login";
+	}, [role]);
+
+	useEffect(() => {
+		dispatch(getManagers());
+		if (user?.email) dispatch(getInventories({ email: user?.email }));
+	}, [user]);
+
 	return (
 		<Box
 			sx={{
@@ -89,10 +97,10 @@ const InventoriesPage = () => {
 							>
 								{managers?.map((manager) => (
 									<MenuItem
-										key={manager.ID}
-										value={manager.ID}
+										key={manager._id}
+										value={manager._id}
 									>
-										{manager.name}
+										{manager.fullName}
 									</MenuItem>
 								))}
 							</Select>
@@ -106,12 +114,12 @@ const InventoriesPage = () => {
 									setSelectedInventory(e.target.value);
 								}}
 							>
-								{inventories.map((inventory) => (
+								{inventories?.map((inventory) => (
 									<MenuItem
-										key={inventory.ID}
-										value={inventory.ID}
+										key={inventory._id}
+										value={inventory._id}
 									>
-										{inventory.name}
+										{inventory.inventoryName}
 									</MenuItem>
 								))}
 							</Select>

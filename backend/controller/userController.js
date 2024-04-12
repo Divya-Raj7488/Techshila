@@ -32,11 +32,30 @@ const loginController = async (req, res) => {
 	);
 
 	const userData = {
+		_id: existingUser._id,
 		name: existingUser.fullName,
 		email: existingUser.email,
 		role: existingUser.role,
 		address: existingUser.address,
+		joiningDate:
+			existingUser.role === "manager"
+				? existingUser.joiningDate
+				: undefined,
+		gender:
+			existingUser.role === "manager" ? existingUser.gender : undefined,
+		phone: existingUser.role === "manager" ? existingUser.phone : undefined,
+		department:
+			existingUser.role === "manager"
+				? existingUser.department
+				: undefined,
+		workdays:
+			existingUser.role === "manager" ? existingUser.workdays : undefined,
+		leavedays:
+			existingUser.role === "manager"
+				? existingUser.leavedays
+				: undefined,
 	};
+
 	return res
 		.status(200)
 		.cookie("Authorization", loginToken)
@@ -104,4 +123,58 @@ const signupController = async (req, res) => {
 		.json({ message: "sign up successful" });
 };
 
-module.exports = { loginController, signupController };
+const getAllManagers = async (req, res) => {
+	try {
+		const managers = await userModel.find({ role: "manager" });
+
+		res.status(200).json(managers);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Failed to fetch managers" });
+	}
+};
+
+const updateManagerController = async (req, res) => {
+	const {
+		managerId,
+		joiningDate,
+		gender,
+		phone,
+		department,
+		workdays,
+		leavedays,
+	} = req.body;
+	if (!managerId) {
+		return res.status(400).json({ message: "Manager ID is required" });
+	}
+
+	try {
+		const manager = await userModel.findById(managerId);
+		if (!manager || manager.role !== "manager") {
+			return res.status(404).json({ message: "Manager not found" });
+		}
+
+		manager.joiningDate = joiningDate;
+		manager.gender = gender;
+		manager.phone = phone;
+		manager.department = department;
+		manager.workdays = workdays;
+		manager.leavedays = leavedays;
+		await manager.save();
+
+		return res
+			.status(200)
+			.json({ message: "Manager updated successfully", manager });
+	} catch (error) {
+		console.error(error);
+		return res
+			.status(500)
+			.json({ message: "Error updating manager. Please try again" });
+	}
+};
+module.exports = {
+	loginController,
+	signupController,
+	getAllManagers,
+	updateManagerController,
+};

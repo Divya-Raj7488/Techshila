@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import * as Components from "../Components/LoginSignup/loginsignup";
 import { createUser, login } from "../Slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import useGetUser from "../utils/useGetUser";
 
 function Login() {
+	useGetUser();
 	const dispatch = useDispatch();
 	const [signIn, toggle] = React.useState(true);
 	const [name, setName] = useState("");
