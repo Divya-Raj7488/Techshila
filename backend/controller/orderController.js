@@ -1,62 +1,47 @@
-const orderModel = require("../models/order");
+const Order = require("../models/order");
 
 const getOrders = (req, res) => {
-  const { _id } = req.user;
-  if (!_id) {
-    return res.status(401).json({ message: "unauthorized" });
-  }
-  const orderHistory = orderModel.find({ _id: _id });
-  return res.status(200).json({
-    message: "here is your orders",
-    orders: orderHistory,
-  });
+	const { _id } = req.user;
+	if (!_id) {
+		return res.status(401).json({ message: "unauthorized" });
+	}
+	const orderHistory = Order.find({ _id: _id });
+	return res.status(200).json({
+		message: "here is your orders",
+		orders: orderHistory,
+	});
 };
 
 const createOrders = async (req, res) => {
-  const { _id } = req.user;
-  const { inventoryId, orderDetails, orderStatus } = req.body;
-  if (
-    !_id ||
-    !inventoryId ||
-    !orderDetails ||
-    !Array.isArray(orderDetails) ||
-    !orderStatus
-  ) {
-    return res.status(400).json({ message: "all fields are required" });
-  }
+	try {
+		const { userId } = req.body;
+		const orderDetails = req.body.order.map((item) => ({
+			medicineId: item.medicineId,
+			inventoryId: item.inventoryId,
+			medicineName: item.name,
+			quantity: item.quantity,
+			price: item.price,
+		}));
 
-  for (const orderItem of orderDetails) {
-    const { medicineNo, medicineId, medicineName, Quantity, price } = orderItem;
-    if (!medicineNo || !medicineId || !medicineName || !Quantity || !price) {
-      return res
-        .status(400)
-        .json({ message: "orderDetails must contain all required fields" });
-    }
-  }
+		const newOrder = new Order({
+			userId,
+			orderDetails,
+			orderStatus: "pending",
+		});
 
-  const orderDetailsArray = orderDetails.map(
-    ({ medicineNo, medicineId, medicineName, Quantity, price }) => ({
-      medicineNo: medicineNo,
-      medicineId: medicineId,
-      medicineName: medicineName,
-      Quantity: Quantity,
-      price: price,
-    })
-  );
+		const orderId = newOrder._id;
 
-  try {
-    await orderModel.create({
-      userId: _id,
-      inventoryId: inventoryId,
-      orderDetails: orderDetailsArray,
-      orderStatus: orderStatus,
-    });
-    return res.status(200).json({ message: "order placed successfully" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "unable to process your request. please try again" });
-  }
+		const savedOrder = await newOrder.save();
+		console.log("Order created");
+		res.status(201).json({
+			orderId: orderId,
+			message: "Order added successfully",
+			order: savedOrder,
+		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Failed to add order" });
+	}
 };
 
-module.exports = { getOrders, createOrders};
+module.exports = { getOrders, createOrders };
