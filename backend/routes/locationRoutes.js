@@ -16,7 +16,7 @@ const dummyStores = [
     { name: "Medico Supplies", address: "Durga Colony, Roorkee, Uttarakhand 247667, India", coordinates: { latitude: 29.843978, longitude: 77.915242 } },
     { name: "Medical Depot", address: "Nehru Nagar, Roorkee, Shafipur, Uttarakhand 247667, Uttarakhand, India", coordinates: { latitude: 29.873317, longitude: 77.876538 } },
     { name: "Pharmacy Plus", address: "Adarsh Nagar, Roorkee, Uttarakhand 247667, India", coordinates: { latitude: 29.874550, longitude: 77.900641 } },
-    { name: "Health Hub", address: "Paniyala Rd, Azad Nagar, Nehru Nagar, Roorkee, Uttarakhand 247667, India", coordinates: { latitude: 29.867897, longitude: 77.876125 } },
+    { name: "Health Hub", address: "RVVW+FV7, Laskar Road, Dhandera, Roorkee, Uttarakhand 247667, India", coordinates: { latitude: 29.843676, longitude:  77.897214 } },
     { name: "Medical Mart", address: "VWPR+HPG, Haridwar Rd, Belrisalhapur, Modipuram, Uttarakhand 247667 India", coordinates: { latitude: 29.886442, longitude: 77.941832 } }
 ];
 

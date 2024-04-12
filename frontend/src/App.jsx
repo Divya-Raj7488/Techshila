@@ -22,7 +22,8 @@ import Summary from "./Pages/OrderSummary";
 import AddMedicine from "./Pages/AddMedicines";
 import OrderStatus from "./Pages/OrderStatus";
 import Navbar from "./Components/Navnsidebar/navbar";
-import ManagerCeo from "./Pages/ManagerCeo";
+import ManagerCeo from "./Pages/ManagerCeo";import TrackOrderPage from "./Pages/TrackOrderPage";
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -46,7 +47,12 @@ function App() {
           <Route exact path="/managerceo" element={<ManagerCeo />} />
           <Route exact path="/stocks" element={<StockPage />} />
           <Route exact path="/inventories" element={<InventoriesPage />} />
-            {/*	<Route path="/managers" element={<ManagersPage />} /> */}
+            {/*	<Route path="/managers" element={<ManagersPage />} /> */}					<Route
+						exact
+						path="/trackorder"
+						element={<TrackOrderPage />}
+					/>
+
         </Routes>
       </Router>
     </>
