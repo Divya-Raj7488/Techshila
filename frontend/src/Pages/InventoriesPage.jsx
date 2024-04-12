@@ -24,6 +24,36 @@ import {
 } from "../Slices/inventorySlice";
 import InventoryTable from "../Components/Inventory/InventoryTable";
 
+const IndianStates = [
+	"Andhra Pradesh",
+	"Arunachal Pradesh",
+	"Assam",
+	"Bihar",
+	"Chhattisgarh",
+	"Goa",
+	"Gujarat",
+	"Haryana",
+	"Himachal Pradesh",
+	"Jharkhand",
+	"Karnataka",
+	"Kerala",
+	"Madhya Pradesh",
+	"Maharashtra",
+	"Manipur",
+	"Meghalaya",
+	"Mizoram",
+	"Nagaland",
+	"Odisha",
+	"Punjab",
+	"Rajasthan",
+	"Sikkim",
+	"Tamil Nadu",
+	"Telangana",
+	"Tripura",
+	"Uttar Pradesh",
+	"Uttarakhand",
+	"West Bengal",
+];
 const InventoriesPage = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
@@ -38,7 +68,8 @@ const InventoriesPage = () => {
 		houseName: "",
 		locality: "",
 		city: "",
-		state: "India",
+		coordinateLongitude: "",
+		coordinateLatitude: "",
 		pincode: "",
 	});
 	const [medicineName, setMedicineName] = useState("");
@@ -50,7 +81,6 @@ const InventoriesPage = () => {
 	const handleClose = () => {
 		setOpen(false);
 	};
-	
 
 	const handleSave = () => {
 		const data = {
@@ -75,7 +105,10 @@ const InventoriesPage = () => {
 	}, [user]);
 
 	return (
-		<Box ml={40} mt={2} mr={10}
+		<Box
+			ml={40}
+			mt={2}
+			mr={10}
 			sx={{
 				display: "flex",
 				flexDirection: "column",
@@ -135,9 +168,7 @@ const InventoriesPage = () => {
 							</Select>
 						</FormControl>
 						<Box sx={{ mt: 2 }}>
-							<Typography variant="subtitle1">
-								Address
-							</Typography>
+							<Typography variant="subtitle1">Address</Typography>
 							<TextField
 								label="House Name"
 								value={address.houseName}
@@ -174,18 +205,51 @@ const InventoriesPage = () => {
 								fullWidth
 								margin="normal"
 							/>
+
 							<TextField
-								label="State"
-								value={address.state}
+								label="Location Coordinate Longitude"
+								value={address.coordinateLongitude}
 								onChange={(e) =>
 									setAddress({
 										...address,
-										state: e.target.value,
+										coordinateLongitude: e.target.value,
 									})
 								}
 								fullWidth
 								margin="normal"
 							/>
+							<TextField
+								label="Location Coordinate Latitude"
+								value={address.coordinateLatitude}
+								onChange={(e) =>
+									setAddress({
+										...address,
+										coordinateLatitude: e.target.value,
+									})
+								}
+								fullWidth
+								margin="normal"
+							/>
+
+							<FormControl fullWidth sx={{ mt: 2 }}>
+								<InputLabel>State</InputLabel>
+								<Select
+									value={address.state}
+									label="State"
+									onChange={(e) =>
+										setAddress({
+											...address,
+											state: e.target.value,
+										})
+									}
+								>
+									{IndianStates.map((state) => (
+										<MenuItem key={state} value={state}>
+											{state}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
 							<TextField
 								label="Pincode"
 								value={address.pincode}
