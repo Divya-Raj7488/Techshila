@@ -79,6 +79,7 @@ const Search = () => {
     };
 
     return (
+        
         <Box
             sx={{
                 display: "flex",
