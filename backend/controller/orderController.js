@@ -21,6 +21,19 @@ const getOrdersByUserId = async (req, res) => {
 	}
 };
 
+const getOrderDetailsByInventoryId = async (req, res) => {
+	try {
+		const { inventoryId } = req.params;
+		const orders = await Order.find({
+			"orderDetails.inventoryId": inventoryId,
+		});
+		res.status(200).json({ orders });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Failed to fetch orders" });
+	}
+};
+
 const createOrders = async (req, res) => {
 	try {
 		const { userId } = req.body;
@@ -53,4 +66,9 @@ const createOrders = async (req, res) => {
 	}
 };
 
-module.exports = { getOrders, getOrdersByUserId, createOrders };
+module.exports = {
+	getOrders,
+	getOrdersByUserId,
+	createOrders,
+	getOrderDetailsByInventoryId,
+};

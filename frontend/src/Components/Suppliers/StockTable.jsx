@@ -18,6 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import StockRow from "./StockRow";
 import { closeSnackbar } from "../../Slices/cartSlice";
+import { getStocks } from "../../Slices/stockSlice";
 
 const FilteredTable = ({ filteredStocks }) => {
 	const handleSnackbarClose = () => {
@@ -73,13 +74,13 @@ const StockTable = ({ medicines }) => {
 	const dispatch = useDispatch();
 	const fetchedList = useSelector((state) => state.stock);
 
-	const presentMedicines = medicines.filter(
+	const presentMedicines = medicines?.filter(
 		(medicine) => medicine.quantity > 0
 	);
-	const expiredMedicines = medicines.filter(
+	const expiredMedicines = medicines?.filter(
 		(medicine) => new Date(medicine.expiryDate) < new Date()
 	);
-	const outOfStockMedicines = medicines.filter(
+	const outOfStockMedicines = medicines?.filter(
 		(medicine) => medicine.quantity === 0
 	);
 
@@ -87,7 +88,7 @@ const StockTable = ({ medicines }) => {
 		if (!medicines) {
 			dispatch(getStocks());
 		}
-	}, [fetchedList]);
+	}, []);
 
 	const [searchTerm, setSearchTerm] = useState("");
 

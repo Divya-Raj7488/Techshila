@@ -1,5 +1,5 @@
-import React, { useEffect, useState  } from "react";
-import {useSelector} from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
 	Collapse,
 	IconButton,
@@ -24,7 +24,6 @@ import { addQuantity, removeItem } from "../../Slices/cartSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useGetUser from "../../utils/useGetUser";
 
-
 // import SupplierDialog from "./SupplierDialog";
 
 const AddQuantityBtn = ({ medicine, supplierId }) => {
@@ -41,22 +40,23 @@ const AddQuantityBtn = ({ medicine, supplierId }) => {
 	};
 	// const userRole = useSelector(state => state.user.role); // Assuming you have access to user role in Redux store
 
-	useGetUser()
-	const [showAddQuantityButton, setShowAddQuantityButton] = useState(true); 
-	 const user = useSelector((state) => state.user.userLoggedIn)
-	 const role = user?.role
+	useGetUser();
+	const [showAddQuantityButton, setShowAddQuantityButton] = useState(true);
+	const user = useSelector((state) => state.user.userLoggedIn);
+	const role = user?.role;
 	//const userRole = useSelector(state => state.user.role);
-	 useEffect(() => {
-	 	if(role === 'ceo')
-		{
+	useEffect(() => {
+		if (role === "ceo") {
 			setShowAddQuantityButton(false);
-		  } else {
+		} else {
 			setShowAddQuantityButton(true);
-		  }
-	},[role]);
+		}
+	}, [role]);
 	return (
 		<>
-			{(showAddQuantityButton && !checked) && <Button onClick={handleChange}>Add Quantity</Button>}
+			{showAddQuantityButton && !checked && (
+				<Button onClick={handleChange}>Add Quantity</Button>
+			)}
 			{checked && (
 				<Grow
 					in={checked}
@@ -141,6 +141,7 @@ const SupplierRow = (props) => {
 
 	const [open, setOpen] = useState(false);
 	const medicines = row.medicines;
+	console.log(row);
 
 	return (
 		<React.Fragment>
@@ -186,7 +187,7 @@ const SupplierRow = (props) => {
 					{row.phone}
 				</TableCell>
 				<TableCell sx={{ fontFamily: "Poppins" }}>
-					{row.joiningDate}
+					{row.joiningDate.trim().split("T")[0]}
 				</TableCell>
 			</TableRow>
 			<TableRow>

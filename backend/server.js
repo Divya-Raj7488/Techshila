@@ -8,7 +8,7 @@ const cors = require("cors");
 const DbConfig = require("./config/dbConfig");
 const cookieParser = require("cookie-parser");
 //for current location
-const locationRoutes = require('./routes/locationRoutes');
+const locationRoutes = require("./routes/locationRoutes");
 // const otherRoutes = require('./routes/otherRoutes');
 
 DbConfig();
@@ -25,9 +25,9 @@ app.use("/inventory", require("./routes/inventary"));
 app.use("/suppliers", require("./routes/supplierRoutes"));
 app.use("/medicines", require("./routes/medicineRoutes"));
 app.use("/medQuant", require("./routes/medQuantRoutes"));
-
+app.use("/stocks", require("./routes/stockRoutes"));
 // Use location-related routes
-app.use('/api/location', locationRoutes);
+app.use("/api/location", locationRoutes);
 
 // Use other routes for different functionalities
 // app.use('/api/other', otherRoutes);

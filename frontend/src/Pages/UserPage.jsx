@@ -36,7 +36,7 @@ const UserPage = () => {
 			<Typography p={4} variant="h4" fontFamily={"Poppins"} >
 				Search Medicines
 			</Typography>
-			
+
 			<Search />
 			{items && items.length > 0 && (
 				<Button
@@ -65,7 +65,6 @@ const UserPage = () => {
 			{/* <LocationComponent /> */}
 
 		</Box>
-		
 	);
 };
 
