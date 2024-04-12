@@ -25,28 +25,24 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
 					/>
 				</div>
 
-				<div className="text-white">
-					<FaBell className="w-6 h-6" />
-				</div>
-				<div className="relative">
-					<button className="text-white group">
-						<FaUserCircle className="w-6 h-6 mt-1" />
-						<div className="z-10 hidden absolute bg-white rounded-lg shadow w-32 group-focus:block top-full right-0">
-							<ul className="py-2 text-sm text-gray-950">
-								<li>
-									<Link to="/profile">Profile</Link>
-								</li>
-
-								<li>
-									<a href="">Log out</a>
-								</li>
-							</ul>
-						</div>
-					</button>
-				</div>
-			</div>
-		</nav>
-	);
-};
+            <div className='text-white'> 
+                <FaBell className='w-6 h-6' />
+            </div>
+            <div className='relative'>
+                <button className='text-white group'>
+                    <FaUserCircle className='w-6 h-6 mt-1'/>
+                    <div className='z-10 hidden absolute bg-white rounded-lg shadow w-32 group-focus:block top-full right-0'>
+                        <ul className='py-2 text-sm text-gray-950'>
+                            <li><Link to="/profile">Profile</Link></li>
+                            
+                            <li><Link to="/login">Log out</Link></li>
+                        </ul>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+  )
+}
 
 export default Navbar;

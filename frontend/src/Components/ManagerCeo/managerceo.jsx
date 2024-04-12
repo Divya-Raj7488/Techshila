@@ -64,7 +64,7 @@ const ManagerCeo = () => {
   };
 
   return (
-    <Box
+    <Box  ml={40} mt={2} mr={10}
       sx={{
         display: "flex",
         flexDirection: "column",

@@ -28,13 +28,15 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
+    
     <>
       <Router>
+	  <Bar/>
         <Routes>
           <Route exact path="/suppliers" element={<SuppliersPage />} />
           <Route path="/add-supplier" element={<AddSupplier />} />
           <Route path="/add-store-manager" element={<AddStoreManager />} />
-          <Route path="/*" element={<Sidebar />} /> {/* Default route */}
+          <Route path="/*" element={<UserPage />} /> {/* Default route */}
           <Route exact path="/bar" element={<Bar />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/user" element={<UserPage />} />

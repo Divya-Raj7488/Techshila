@@ -17,8 +17,8 @@ import {
 const UserProfile = () => {
     // Sample data for personal details
     const personalDetails = {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
+        name: 'Bhoomi',
+        email: 'b_bonal@cs.iitr.ac.in',
         address: '1234 Main Street, City, Country',
         phoneNumber: '+1234567890',
     };

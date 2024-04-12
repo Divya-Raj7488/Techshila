@@ -12,7 +12,10 @@ const UserPage = () => {
 	useEffect(() => {
 		if(role === 'ceo')
 		window.location.href = '/inventories';
+	
 	},[role]);
+
+
 
 
   return (

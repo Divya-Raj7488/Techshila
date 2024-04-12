@@ -22,6 +22,11 @@ const UserPage = () => {
 		if (role === "ceo") window.location.href = "/inventories";
 	}, [role]);
 
+	useEffect(() => {
+		if(role ==='manager')
+		window.location.href = '/store-manager';
+		},[role]);
+
 	const items = useSelector((state) => state.cart.items);
 
 	return (

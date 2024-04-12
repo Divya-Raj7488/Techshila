@@ -38,20 +38,9 @@ const AddMedicine = () => {
 		setExpiryDate("");
 	};
 
-	return (
-		<div>
-			<h1
-				style={{
-					color: "darkgrey",
-					paddingTop: "100px",
-					paddingLeft: "510px",
-					paddingRight: "500px",
-					textAlign: "left",
-				}}
-			>
-				Add Medicine Details
-			</h1>
-
+  return (
+    <div>
+      <h1 style={{ color: "black" , paddingTop: "100px", paddingLeft: "510px" , paddingRight:"500px" , textAlign:"left" , fontSize:"40px"}}>Add Medicine Details</h1>
 			<form
 				style={{
 					paddingTop: "50px",
