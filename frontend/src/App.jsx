@@ -28,9 +28,10 @@ function App() {
 			<Router>
 				<Bar/>
 				<Routes>
-
+					
 					<Route exact path="/suppliers" element={<SuppliersPage />} />
 					<Route path="/add-supplier" element={<AddSupplier />} />
+				{/*	<Route path="/managers" element={<ManagersPage />} /> */}
                     <Route path="/add-store-manager" element={<AddStoreManager />} />
                     <Route path="/*" element={<UserPage/>} /> {/* Default route */}
 					<Route exact path="/bar" element={<Bar />} />

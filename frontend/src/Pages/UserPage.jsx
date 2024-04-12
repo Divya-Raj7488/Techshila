@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import Search from "../Components/User/search";
 import useGetUser from "../utils/useGetUser";
+import LocationComponent from '../Components/User/currentLocation';
 import {useSelector} from 'react-redux'
 
 const UserPage = () => {
@@ -24,6 +25,7 @@ const UserPage = () => {
 			</Typography>
 			
 			<Search />
+			<LocationComponent />
 		</Box>
 		
 	);
