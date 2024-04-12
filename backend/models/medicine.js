@@ -18,6 +18,12 @@ const medicineSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	inventories: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Inventory",
+		},
+	],
 });
 
 const medicineModel = mongoose.model("Medicine", medicineSchema);

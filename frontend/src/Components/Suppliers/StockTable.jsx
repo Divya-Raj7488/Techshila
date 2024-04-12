@@ -18,7 +18,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import StockRow from "./StockRow";
 import { closeSnackbar } from "../../Slices/cartSlice";
-import { medicines } from "../../dummy";
 
 const FilteredTable = ({ filteredStocks }) => {
 	const handleSnackbarClose = () => {
@@ -70,12 +69,9 @@ const FilteredTable = ({ filteredStocks }) => {
 	);
 };
 
-const StockTable = () => {
+const StockTable = ({ medicines }) => {
 	const dispatch = useDispatch();
 	const fetchedList = useSelector((state) => state.stock);
-	// const medicines = fetchedList.medicinesList;
-
-	// if medicines not in state, would come from specific inventory
 
 	const presentMedicines = medicines.filter(
 		(medicine) => medicine.quantity > 0

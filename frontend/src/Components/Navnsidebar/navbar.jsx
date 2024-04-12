@@ -1,5 +1,6 @@
 import React from 'react'
 import {FaBars, FaSearch, FaBell, FaUserCircle} from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const Navbar = ({sidebarToggle, setSidebarToggle}) => {
   return (
@@ -24,8 +25,8 @@ const Navbar = ({sidebarToggle, setSidebarToggle}) => {
                     <FaUserCircle className='w-6 h-6 mt-1'/>
                     <div className='z-10 hidden absolute bg-white rounded-lg shadow w-32 group-focus:block top-full right-0'>
                         <ul className='py-2 text-sm text-gray-950'>
-                            <li><a href="">Profile</a></li>
-                            <li><a href="">Setting</a></li>
+                            <li><Link to="/profile">Profile</Link></li>
+                            
                             <li><a href="">Log out</a></li>
                         </ul>
                     </div>

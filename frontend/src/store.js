@@ -6,6 +6,7 @@ import managerReducer from "./Slices/managerSlice";
 import inventoryReducer from "./Slices/inventorySlice";
 import userReducer from "./Slices/userSlice";
 import medicineReducer from "./Slices/medicineSlice";
+import orderReducer from "./Slices/orderSlice";
 
 const store = configureStore({
 	reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
 		inventory: inventoryReducer,
 		user: userReducer,
 		medicine: medicineReducer,
+		order: orderReducer,
 	},
 });
 
