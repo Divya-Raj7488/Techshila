@@ -10,6 +10,7 @@ Go to backend and run the backend server
 
 ```json
 	cd backend
+	npm install
 	node server.js
 ```
 
@@ -26,5 +27,6 @@ Go to frontend and run the frontend server
 
 ```json
 cd frontend
+npm install
 npm run dev
 ```
