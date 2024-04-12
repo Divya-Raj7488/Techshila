@@ -27,6 +27,9 @@ const InventoryDialog = () => {
 	const open = useSelector((state) => state.inventory.open);
 	const managers = useSelector((state) => state.manager.managersList);
 	const inventory = useSelector((state) => state.inventory.selectedInventory);
+	const inventoryMedicines = useSelector(
+		(state) => state.inventory.inventoryMedicines
+	);
 	const paramRef = useRef();
 
 	const handleClose = () => {
@@ -79,7 +82,7 @@ const InventoryDialog = () => {
 				</Typography>
 			</Box>
 			<Box p={2}>
-				<StockTable />
+				<StockTable medicines={inventoryMedicines} />
 
 				<Typography p={3} variant="h4" fontFamily={"Poppins"}>
 					Current Orders

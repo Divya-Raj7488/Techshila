@@ -1,32 +1,57 @@
 const Inventory = require("../models/inventory");
 const Medicine = require("../models/medicine");
+const InventoryItem = require("../models/inventoryItem");
+
 const User = require("../models/user");
 
 const getStore = async (req, res) => {
 	const { email } = req.body;
 
 	try {
-		let storeData;
+		let medData;
 		const user = await User.findOne({ email });
 		if (!user) {
 			return res.status(401).json({ message: "Unauthorized" });
 		}
+		if (user.role !== "user") {
+			medData = await Inventory.find().populate("medicines");
+			const updatedMedicines = [];
+			for (const inventory of medData) {
+				for (const medicine of inventory.medicines) {
+					const inventoryItem = await InventoryItem.findOne({
+						medicine: medicine._id,
+						inventory: inventory._id,
+					});
 
-		if (user.role === "ceo") {
-			storeData = await Inventory.find()
-				.populate("medicines")
-				.populate("manager");
-		} else if (user.role === "manager") {
-			storeData = await Inventory.find({ manager: user._id }).populate(
-				"medicines"
-			);
+					if (inventoryItem) {
+						const updatedMedicine = {
+							...medicine.toObject(),
+							quantity: inventoryItem.quantity,
+						};
+						updatedMedicines.push(updatedMedicine);
+					}
+				}
+			}
+			medData = updatedMedicines;
+		}
+		let storeData;
+
+		if (user.role === "ceo" || user.role === "manager") {
+			if (user.role === "ceo") {
+				storeData = await Inventory.find().populate("manager");
+			} else {
+				storeData = await Inventory.find({
+					manager: user._id,
+				});
+			}
+			return res.status(200).json({
+				message: "Here is your store",
+				stores: storeData,
+				medicines: medData,
+			});
 		} else {
 			return res.status(401).json({ message: "Unauthorized" });
 		}
-
-		return res
-			.status(200)
-			.json({ message: "Here is your store", stores: storeData });
 	} catch (error) {
 		console.error(error);
 		return res
