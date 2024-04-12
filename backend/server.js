@@ -20,6 +20,7 @@ app.use("/order", require("./routes/orderRoutes"));
 
 app.use("/inventory", require("./routes/inventary"));
 
+
 // app.use("/stocks", require("./routes/stockRoutes"));
 app.use("/suppliers", require("./routes/supplierRoutes"));
 app.use("/medicines", require("./routes/medicineRoutes"));

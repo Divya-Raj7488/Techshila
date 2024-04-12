@@ -13,6 +13,7 @@ import {
 	FormControl,
 	Box,
 	Typography,
+	TextField,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getManagers } from "../Slices/managerSlice";
@@ -31,6 +32,16 @@ const InventoriesPage = () => {
 	}, []);
 
 	const [open, setOpen] = useState(false);
+	const [selectedManager, setSelectedManager] = useState();
+	const [selectedInventory, setSelectedInventory] = useState();
+	const [address, setAddress] = useState({
+		houseName: "",
+		locality: "",
+		city: "",
+		state: "India",
+		pincode: "",
+	});
+	const [medicineName, setMedicineName] = useState("");
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -39,8 +50,7 @@ const InventoriesPage = () => {
 	const handleClose = () => {
 		setOpen(false);
 	};
-	const [selectedManager, setSelectedManager] = useState();
-	const [selectedInventory, setSelectedInventory] = useState();
+	
 
 	const handleSave = () => {
 		const data = {
@@ -65,7 +75,7 @@ const InventoriesPage = () => {
 	}, [user]);
 
 	return (
-		<Box
+		<Box ml={40} mt={2} mr={10}
 			sx={{
 				display: "flex",
 				flexDirection: "column",
@@ -84,16 +94,16 @@ const InventoriesPage = () => {
 					Add Inventory
 				</Button>
 				<Dialog maxWidth="md" open={open} onClose={handleClose}>
-					<DialogTitle>Add a Inventory</DialogTitle>
-					<Box sx={{ px: 4, py: 3, width: "400px" }}>
-						<FormControl fullWidth>
+					<DialogTitle>Add an Inventory</DialogTitle>
+					<DialogContent>
+						<FormControl fullWidth sx={{ mt: 2 }}>
 							<InputLabel>Manager</InputLabel>
 							<Select
 								value={selectedManager}
 								label="Manager"
-								onChange={(e) => {
-									setSelectedManager(e.target.value);
-								}}
+								onChange={(e) =>
+									setSelectedManager(e.target.value)
+								}
 							>
 								{managers?.map((manager) => (
 									<MenuItem
@@ -105,14 +115,14 @@ const InventoriesPage = () => {
 								))}
 							</Select>
 						</FormControl>
-						<FormControl fullWidth style={{ marginTop: "20px" }}>
+						<FormControl fullWidth sx={{ mt: 2 }}>
 							<InputLabel>Inventory</InputLabel>
 							<Select
 								value={selectedInventory}
 								label="Inventory"
-								onChange={(e) => {
-									setSelectedInventory(e.target.value);
-								}}
+								onChange={(e) =>
+									setSelectedInventory(e.target.value)
+								}
 							>
 								{inventories?.map((inventory) => (
 									<MenuItem
@@ -124,10 +134,85 @@ const InventoriesPage = () => {
 								))}
 							</Select>
 						</FormControl>
-					</Box>
+						<Box sx={{ mt: 2 }}>
+							<Typography variant="subtitle1">
+								Address
+							</Typography>
+							<TextField
+								label="House Name"
+								value={address.houseName}
+								onChange={(e) =>
+									setAddress({
+										...address,
+										houseName: e.target.value,
+									})
+								}
+								fullWidth
+								margin="normal"
+							/>
+							<TextField
+								label="Locality"
+								value={address.locality}
+								onChange={(e) =>
+									setAddress({
+										...address,
+										locality: e.target.value,
+									})
+								}
+								fullWidth
+								margin="normal"
+							/>
+							<TextField
+								label="City"
+								value={address.city}
+								onChange={(e) =>
+									setAddress({
+										...address,
+										city: e.target.value,
+									})
+								}
+								fullWidth
+								margin="normal"
+							/>
+							<TextField
+								label="State"
+								value={address.state}
+								onChange={(e) =>
+									setAddress({
+										...address,
+										state: e.target.value,
+									})
+								}
+								fullWidth
+								margin="normal"
+							/>
+							<TextField
+								label="Pincode"
+								value={address.pincode}
+								onChange={(e) =>
+									setAddress({
+										...address,
+										pincode: e.target.value,
+									})
+								}
+								fullWidth
+								margin="normal"
+							/>
+						</Box>
+						<TextField
+							label="Medicine Name"
+							value={medicineName}
+							onChange={(e) => setMedicineName(e.target.value)}
+							fullWidth
+							margin="normal"
+							sx={{ mt: 2 }}
+						/>
+					</DialogContent>
 					<DialogActions>
 						<Button onClick={handleClose}>Cancel</Button>
-						<Button onClick={handleSave}>Save</Button>
+						<Button onClick={handleSave} color="primary">
+							Save
+						</Button>
 					</DialogActions>
 				</Dialog>
 			</div>
