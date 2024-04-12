@@ -10,6 +10,6 @@ const {
 router.route("/signup").post(signupController);
 router.route("/login").post(loginController);
 router.route("/managers").get(getAllManagers);
-router.route("/managers").post(updateManagerController);
+router.route("/managers").put(updateManagerController);
 
 module.exports = router;

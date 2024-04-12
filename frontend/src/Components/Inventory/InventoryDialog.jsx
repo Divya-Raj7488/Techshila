@@ -25,8 +25,9 @@ const Transition = forwardRef(function Transition(props, ref) {
 const InventoryDialog = () => {
 	const dispatch = useDispatch();
 	const open = useSelector((state) => state.inventory.open);
-	const managers = useSelector((state) => state.manager.managersList);
 	const inventory = useSelector((state) => state.inventory.selectedInventory);
+	const managers = inventory.manager;
+	console.log(inventory);
 	const inventoryMedicines = useSelector(
 		(state) => state.inventory.inventoryMedicines
 	);
@@ -89,7 +90,7 @@ const InventoryDialog = () => {
 				</Typography>
 
 				{/* Render the OrderTable component */}
-				<CurrentOrdersTable />
+				<CurrentOrdersTable inventoryId={inventory._id} />
 			</Box>
 		</Dialog>
 	);

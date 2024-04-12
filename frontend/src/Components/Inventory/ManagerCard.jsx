@@ -68,14 +68,14 @@ const ManagerCard = ({ manager, color }) => {
 					variant="h6"
 					sx={{ fontWeight: "medium", color: green[500] }}
 				>
-					Work Days: {manager.workDays}
+					Work Days: {manager.workdays}
 				</Typography>
 				<Typography
 					fontFamily={"Poppins"}
 					variant="body1"
 					sx={{ mb: 2, color: red[600] }}
 				>
-					Leaves: {manager.leaves}
+					Leaves: {manager.leavedays}
 				</Typography>
 			</div>
 		</>

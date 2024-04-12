@@ -20,6 +20,24 @@ export const getUsersOrders = createAsyncThunk(
 	}
 );
 
+export const getInventoryOrders = createAsyncThunk(
+	"inventoryOrder/get",
+	async (inventoryId) => {
+		return axios
+			.get(`${userOrderApi}/${inventoryId}`)
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				}
+			})
+			.catch((error) => {
+				throw new Error(
+					error.response.data.message || "An error occurred"
+				);
+			});
+	}
+);
+
 export const sendOrder = createAsyncThunk("order/add", async (orderData) => {
 	return axios
 		.post(userOrderApi, orderData)
@@ -68,6 +86,19 @@ const orderSlice = createSlice({
 				state.error = "";
 			})
 			.addCase(getUsersOrders.rejected, (state, action) => {
+				state.loading = false;
+				state.ordersList = [];
+				state.error = action.error.message;
+			})
+			.addCase(getInventoryOrders.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(getInventoryOrders.fulfilled, (state, action) => {
+				state.loading = false;
+				state.ordersList = action.payload;
+				state.error = "";
+			})
+			.addCase(getInventoryOrders.rejected, (state, action) => {
 				state.loading = false;
 				state.ordersList = [];
 				state.error = action.error.message;
