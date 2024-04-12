@@ -91,7 +91,9 @@ const OrderSummary = () => {
 									}
 								>
 									<TableCell>{order._id}</TableCell>
-									<TableCell>{order?.createdAt}</TableCell>
+									<TableCell>
+										{order?.createdAt?.trim().split("T")[0]}
+									</TableCell>
 									<TableCell>{order.orderStatus}</TableCell>
 									<TableCell>
 										{order.orderDetails?.length}

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { userOrderApi } from "../Links.js";
+import { inventoryOrderApi, userOrderApi } from "../Links.js";
 
 export const getUsersOrders = createAsyncThunk(
 	"userOrders/get",
@@ -24,7 +24,7 @@ export const getInventoryOrders = createAsyncThunk(
 	"inventoryOrder/get",
 	async (inventoryId) => {
 		return axios
-			.get(`${userOrderApi}/${inventoryId}`)
+			.get(`${inventoryOrderApi}${inventoryId}`)
 			.then((response) => {
 				if (response.status === 200) {
 					return response.data;
@@ -95,7 +95,7 @@ const orderSlice = createSlice({
 			})
 			.addCase(getInventoryOrders.fulfilled, (state, action) => {
 				state.loading = false;
-				state.ordersList = action.payload;
+				state.ordersList = action.payload["orders"];
 				state.error = "";
 			})
 			.addCase(getInventoryOrders.rejected, (state, action) => {

@@ -38,9 +38,9 @@ export const updateManager = createAsyncThunk(
 	}
 );
 
-export const getInventory = createAsyncThunk("inventory/get", async (id) => {
+export const getInventory = createAsyncThunk("inventory/get", async (user) => {
 	return axios
-		.get(`${inventoryApi}${id}/`)
+		.post(`${inventoryApi}/get`, user)
 		.then((response) => {
 			if (response.status === 200) {
 				return response.data;
@@ -99,7 +99,8 @@ const inventorySlice = createSlice({
 			})
 			.addCase(getInventory.fulfilled, (state, action) => {
 				state.loading = false;
-				state.selectedInventory = action.payload;
+				state.selectedInventory = action.payload["stores"][0];
+				state.inventoryMedicines = action.payload["medicines"];
 				state.error = "";
 			})
 			.addCase(getInventory.rejected, (state, action) => {

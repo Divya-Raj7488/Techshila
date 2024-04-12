@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	AppBar,
 	Box,
-	Button,
-	Collapse,
 	Dialog,
 	IconButton,
 	Slide,
@@ -26,8 +24,7 @@ const InventoryDialog = () => {
 	const dispatch = useDispatch();
 	const open = useSelector((state) => state.inventory.open);
 	const inventory = useSelector((state) => state.inventory.selectedInventory);
-	const managers = inventory.manager;
-	console.log(inventory);
+	const managers = inventory?.manager;
 	const inventoryMedicines = useSelector(
 		(state) => state.inventory.inventoryMedicines
 	);

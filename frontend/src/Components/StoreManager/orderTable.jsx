@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Table,
 	TableBody,
@@ -16,18 +16,28 @@ import {
 import StepperDialog from "../StoreManager/Stepper";
 import { useDispatch, useSelector } from "react-redux";
 import { getInventoryOrders } from "../../Slices/orderSlice";
+import useGetUser from "../../utils/useGetUser";
+import { getInventory } from "../../Slices/inventorySlice";
+import OrderSummary from "../OrderStatus/orderstatus";
 
-const CurrentOrdersTable = ({ inventoryId }) => {
+const CurrentOrdersTable = () => {
+	useGetUser();
 	const [openDialog, setOpenDialog] = useState(false);
 	const [selectedOrder, setSelectedOrder] = useState(null); // To store the selected order
 	const dispatch = useDispatch();
+	const inventory = useSelector((state) => state.inventory.selectedInventory);
+	const user = useSelector((state) => state.user.userLoggedIn);
 
 	useEffect(() => {
-		dispatch(getInventoryOrders(inventoryId));
-	}, []);
+		if (user?.email) dispatch(getInventory({ email: user.email }));
+	}, [user]);
 
-	const orders = useSelector((state) => state.order.ordersList);
+	useEffect(() => {
+		console.log(inventory);
+		if (inventory?._id) dispatch(getInventoryOrders(inventory?._id));
+	}, [inventory]);
 
+	const orders = useSelector((state) => state.order.ordersList) || [];
 	const handleClickRow = (order) => {
 		setSelectedOrder(order);
 		setOpenDialog(true);
@@ -39,7 +49,8 @@ const CurrentOrdersTable = ({ inventoryId }) => {
 
 	return (
 		<div>
-			<TableContainer>
+			<OrderSummary />
+			{/* <TableContainer>
 				<Table>
 					<TableHead>
 						<TableRow>
@@ -50,7 +61,7 @@ const CurrentOrdersTable = ({ inventoryId }) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{orders.map((order) => (
+						{orders?.map((order) => (
 							<TableRow
 								key={order.id}
 								onClick={() => handleClickRow(order)}
@@ -75,7 +86,7 @@ const CurrentOrdersTable = ({ inventoryId }) => {
 						))}
 					</TableBody>
 				</Table>
-			</TableContainer>
+			</TableContainer> */}
 
 			{/* Dialog for displaying details */}
 			<Dialog

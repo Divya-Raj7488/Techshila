@@ -4,7 +4,6 @@ import {
 	AppBar,
 	Box,
 	Button,
-	Collapse,
 	IconButton,
 	Dialog,
 	Slide,

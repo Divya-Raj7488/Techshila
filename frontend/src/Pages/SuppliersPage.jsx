@@ -60,13 +60,13 @@ const SuppliersPage = () => {
 			<Typography p={3} variant="h4" fontFamily={"Poppins"}>
 				Suppliers
 			</Typography>
-			<Button
+			{/* <Button
 				variant="contained"
 				sx={{ m: 2, marginLeft: "auto" }}
 				onClick={handleClickOpen}
 			>
 				Add Suppliers
-			</Button>
+			</Button> */}
 			<Dialog maxWidth="md" open={open} onClose={handleClose}>
 				<DialogTitle>Add a Supplier</DialogTitle>
 				<AddSupplier />

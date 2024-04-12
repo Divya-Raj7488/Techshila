@@ -22,10 +22,10 @@ const getOrdersByUserId = async (req, res) => {
 };
 
 const getOrderDetailsByInventoryId = async (req, res) => {
+	const inventoryId = req.params.inventoryId;
 	try {
-		const { inventoryId } = req.params;
 		const orders = await Order.find({
-			"orderDetails.inventoryId": inventoryId,
+			orderDetails: { $elemMatch: { inventoryId: inventoryId } },
 		});
 		res.status(200).json({ orders });
 	} catch (error) {

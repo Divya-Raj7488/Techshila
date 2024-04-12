@@ -7,11 +7,7 @@ import useGetUser from "../utils/useGetUser";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import { sendOrder } from "../Slices/orderSlice";
-
-//import LocationComponent from '../Components/User/currentLocation';
-
 // import LocationComponent from '../Components/User/currentLocation';
-
 
 const UserPage = () => {
 	useGetUser();
@@ -29,12 +25,9 @@ const UserPage = () => {
 	const items = useSelector((state) => state.cart.items);
 
 	return (
-		
-	
-		<Box ml={40} mt={2} mr={10} >
-		
-			<Typography p={4} variant="h4" fontFamily={"Poppins"} >
-				Search Medicines
+		<Box ml={40} mt={2} mr={10}>
+			<Typography p={4} variant="h4" fontFamily={"Poppins"}>
+				User-Search Page
 			</Typography>
 
 			<Search />
@@ -59,11 +52,7 @@ const UserPage = () => {
 					Proceed to Cart
 				</Button>
 			)}
-
-		{/* <LocationComponent /> */}
-
 			{/* <LocationComponent /> */}
-
 		</Box>
 	);
 };

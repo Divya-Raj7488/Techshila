@@ -10,3 +10,4 @@ export const medicineApi = `${localhost}medicines/`;
 export const summaryApi = `${stockApi}summary/`;
 export const orderApi = `${stockApi}order/`;
 export const userOrderApi = `${localhost}order/`;
+export const inventoryOrderApi = `${userOrderApi}inventoryOrder/`;
