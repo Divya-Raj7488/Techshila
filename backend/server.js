@@ -7,6 +7,9 @@ const corsOptions = require("./config/cors");
 const cors = require("cors");
 const DbConfig = require("./config/dbConfig");
 const cookieParser = require("cookie-parser");
+//for current location
+const locationRoutes = require('./routes/locationRoutes');
+// const otherRoutes = require('./routes/otherRoutes');
 
 DbConfig();
 app.use(cookieParser());
@@ -18,6 +21,12 @@ app.use("/inventary", require("./routes/inventary"));
 // app.use("/stocks", require("./routes/stockRoutes"));
 app.use("/suppliers", require("./routes/supplierRoutes"));
 app.use("/medicines", require("./routes/medicineRoutes"));
+
+// Use location-related routes
+app.use('/api/location', locationRoutes);
+
+// Use other routes for different functionalities
+// app.use('/api/other', otherRoutes);
 
 app.listen(PORT, () => {
 	console.log(`app is running on port ${PORT}`);
