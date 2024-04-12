@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 const userSchema = new mongoose.Schema({
 	email: {
 		type: String,
@@ -84,7 +82,23 @@ const userSchema = new mongoose.Schema({
 			},
 		},
 	],
+	joiningDate: {
+		type: Date,
+	},
+	gender: {
+		type: String,
+		enum: ["male", "female", "other"],
+	},
+	phone: {
+		type: String,
+	},
+	department: {
+		type: String,
+	},
+	workdays: {
+		type: Number,
+	},
+	leavedays: {
+		type: Number,
+	},
 });
-
-const userModel = mongoose.model("User", userSchema);
-module.exports = userModel;

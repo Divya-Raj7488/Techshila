@@ -31,7 +31,6 @@ const InventoryRow = (props) => {
 				}}
 				onClick={(event) => {
 					if (event.target.cellIndex !== 0) {
-						console.log(row);
 						dispatch(setInventory(row));
 						dispatch(setDialogOpen());
 						dispatch(
@@ -64,16 +63,16 @@ const InventoryRow = (props) => {
 					component="th"
 					scope="row"
 				>
-					{row.name}
+					{row.inventoryName}
 				</TableCell>
 				<TableCell sx={{ fontFamily: "Poppins" }} align="right">
-					{row.location}
+					{row.address[0].locality}
 				</TableCell>
 				<TableCell sx={{ fontFamily: "Poppins" }} align="right">
-					{row.revenueCurrentDay}
+					{row.todaysRevenue}
 				</TableCell>
 				<TableCell sx={{ fontFamily: "Poppins" }} align="right">
-					{row.revenueCurrentMonth}
+					{row.currentMonthRevenue}
 				</TableCell>
 			</TableRow>
 			<TableRow>
@@ -131,7 +130,7 @@ const InventoryRow = (props) => {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									{row.managers.map((manager) => (
+									{row.manager?.map((manager) => (
 										<TableRow key={manager.ID}>
 											<TableCell />
 											<TableCell
@@ -144,7 +143,7 @@ const InventoryRow = (props) => {
 											<TableCell
 												sx={{ fontFamily: "Poppins" }}
 											>
-												{manager.name}
+												{manager.fullName}
 											</TableCell>
 											<TableCell
 												sx={{ fontFamily: "Poppins" }}

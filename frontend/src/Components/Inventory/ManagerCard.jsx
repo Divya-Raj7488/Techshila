@@ -47,7 +47,7 @@ const ManagerCard = ({ manager, color }) => {
 					variant="h5"
 					sx={{ fontWeight: "bold", mb: 1 }}
 				>
-					{manager.name}
+					{manager.fullName}
 				</Typography>
 				<Typography
 					fontFamily={"Poppins"}

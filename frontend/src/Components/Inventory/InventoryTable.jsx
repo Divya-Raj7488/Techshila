@@ -13,18 +13,18 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getInventories } from "../../Slices/inventorySlice";
 import InventoryRow from "./InventoryRow";
-import { inventories } from "../../dummy";
+import useGetUser from "../../utils/useGetUser";
 
 const InventoryTable = () => {
+	useGetUser();
 	const dispatch = useDispatch();
 	const fetchedList = useSelector((state) => state.inventory);
-	// const inventories = fetchedList.inventoriesList;
+	const inventories = fetchedList.inventorysList;
+	const user = useSelector((state) => state.user.userLoggedIn);
 
 	useEffect(() => {
-		if (!inventories) {
-			dispatch(getInventories());
-		}
-	}, [fetchedList]);
+		if (user?.email) dispatch(getInventories({ email: user?.email }));
+	}, [user]);
 
 	const [searchTerm, setSearchTerm] = useState("");
 
@@ -33,7 +33,7 @@ const InventoryTable = () => {
 	};
 
 	const filteredInventories = inventories?.filter((inventory) =>
-		inventory.name.toLowerCase().includes(searchTerm)
+		inventory.inventoryName.toLowerCase().includes(searchTerm)
 	);
 
 	return (
