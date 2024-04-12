@@ -15,7 +15,7 @@ app.use(cors(corsOptions));
 app.use("/user", require("./routes/userRoutes"));
 app.use("/order", require("./routes/orderRoutes"));
 app.use("/inventary", require("./routes/inventary"));
-app.use("/stocks", require("./routes/stockRoutes"));
+// app.use("/stocks", require("./routes/stockRoutes"));
 app.use("/suppliers", require("./routes/supplierRoutes"));
 app.use("/medicines", require("./routes/medicineRoutes"));
 

@@ -21,13 +21,15 @@ function App() {
 	return (
 		<>
 			<Router>
-				
+			<Bar />
 				<Routes>
+					
 					<Route exact path="/suppliers" element={<SuppliersPage />} />
 					<Route path="/add-supplier" element={<AddSupplier />} />
+				{/*	<Route path="/managers" element={<ManagersPage />} /> */}
                     <Route path="/add-store-manager" element={<AddStoreManager />} />
                     <Route path="/*" element={<Sidebar/>} /> {/* Default route */}
-				{/*	<Route exact path="/bar" element={<Bar />} />      */   }
+					<Route exact path="/bar" element={<Bar />} />      
 					<Route exact path="/login" element={<Login />} />
 
 				<Route
