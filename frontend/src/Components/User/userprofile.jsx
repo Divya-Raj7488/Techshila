@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
@@ -30,11 +30,36 @@ const UserProfile = () => {
         { id: 3,name:'Medicine 1', date: '2024-04-10',status:'Out for delivery',inventory:'inventory1', total: 100 },
     ];
 
+    // State to store selected profile photo
+    const [profilePhoto, setProfilePhoto] = useState('');
+
+    // Function to handle profile photo selection
+    const handleProfilePhotoChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setProfilePhoto(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <Grid container spacing={3}>
             {/* Profile Photo */}
             <Grid item xs={12} md={3}>
-                <Avatar alt="Profile Photo" src="https://via.placeholder.com/150" sx={{ width: 200, height: 200 }} />
+                <label htmlFor="profile-photo-input">
+                    <Avatar alt="Profile Photo" src={profilePhoto || "https://via.placeholder.com/150"} sx={{ width: 200, height: 200, cursor: 'pointer' }} />
+                    <input
+                        id="profile-photo-input"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={handleProfilePhotoChange}
+                    />
+                </label>
+                {profilePhoto ? null : <Typography variant="body1" gutterBottom sx={{ fontFamily: "Poppins", textAlign: 'center' }}>Select a profile photo</Typography>}
             </Grid>
 
             {/* Personal Details */}
