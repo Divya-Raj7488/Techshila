@@ -104,6 +104,30 @@ export const cartSlice = createSlice({
 			state.snackbarMsg = `${name} added to cart`;
 			state.snackbarOpen = true;
 		},
+		buyMedicines: (state, action) => {
+			const { medicineId, inventoryId, quantity, name, price } =
+				action.payload;
+			console.log(price);
+			const existingItem = state.items.find(
+				(item) =>
+					item.medicineId === medicineId &&
+					item.inventoryId === inventoryId
+			);
+
+			if (existingItem) {
+				existingItem.quantity = quantity;
+			} else {
+				state.items.push({
+					medicineId,
+					inventoryId,
+					quantity,
+					price,
+					name,
+				});
+			}
+			state.snackbarMsg = `${name} added to cart`;
+			state.snackbarOpen = true;
+		},
 		removeItem: (state, action) => {
 			const { medicineId, supplierId } = action.payload;
 			state.items = state.items.filter(
@@ -161,6 +185,7 @@ export const {
 	clearCart,
 	closeSnackbar,
 	setOrderDialog,
+	buyMedicines,
 } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;

@@ -16,6 +16,7 @@ const getStore = async (req, res) => {
 		if (user.role !== "user") {
 			medData = await Inventory.find().populate("medicines");
 			const updatedMedicines = [];
+			console.log(medData);
 			for (const inventory of medData) {
 				for (const medicine of inventory.medicines) {
 					const inventoryItem = await InventoryItem.findOne({
@@ -27,6 +28,12 @@ const getStore = async (req, res) => {
 						const updatedMedicine = {
 							...medicine.toObject(),
 							quantity: inventoryItem.quantity,
+						};
+						updatedMedicines.push(updatedMedicine);
+					} else {
+						const updatedMedicine = {
+							...medicine.toObject(),
+							quantity: 0,
 						};
 						updatedMedicines.push(updatedMedicine);
 					}

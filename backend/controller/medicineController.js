@@ -2,7 +2,7 @@ const medicineModel = require("../models/medicine");
 
 const getAllMedicines = async (req, res) => {
 	try {
-		const medicines = await medicineModel.find({});
+		const medicines = await medicineModel.find({}).populate("inventories");
 		res.status(200).json({
 			medicines: medicines,
 		});

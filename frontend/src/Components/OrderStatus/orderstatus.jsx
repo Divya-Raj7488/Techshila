@@ -1,83 +1,140 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    Box,
-    Tabs,
-    Tab,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	Box,
+	Tabs,
+	Tab,
+	Collapse,
+	List,
+	ListItem,
+	ListItemText,
 } from "@mui/material";
+import { getUsersOrders } from "../../Slices/orderSlice";
+import { useDispatch, useSelector } from "react-redux";
+import useGetUser from "../../utils/useGetUser";
+
+const calculateTotalPrice = (medicines) => {
+	let amount = 0;
+	medicines?.map(
+		(medicine) => (amount += medicine.quantity * medicine.price)
+	);
+	return amount;
+};
 
 const OrderSummary = () => {
-    const orderCurrent = [
-        { id: 1, name: 'Medicine 1', type: 'Tablet', status: 'Out for delivery', inventory: 'inventory1',quantity:5, total: 50 },
-        { id: 2, name: 'Medicine 1', type: 'Tablet', status: 'Out for delivery', inventory: 'inventory1',quantity:5, total: 75 },
-        { id: 3, name: 'Medicine 1', type: 'Tablet', status: 'Out for delivery', inventory: 'inventory1',quantity:5, total: 100 },
-    ];
+	useGetUser();
+	const user = useSelector((state) => state.user.userLoggedIn);
+	const dispatch = useDispatch();
+	const orders = useSelector((state) => state.order.ordersList);
 
-    const orderPast = [
-        { id: 1, name: 'Medicine 1', type: 'Tablet', status: 'Out for delivery', inventory: 'inventory2',quantity:5, total: 50 },
-        { id: 2, name: 'Medicine 1', type: 'Tablet', status: 'Out for delivery', inventory: 'inventory2',quantity:5, total: 75 },
-        { id: 3, name: 'Medicine 1', type: 'Tablet', status: 'Out for delivery', inventory: 'inventory2',quantity:5, total: 100 },
-    ];
+	const orderCurrent = orders?.filter(
+		(order) => order.orderStatus !== "delivered"
+	);
+	const orderPast = orders?.filter(
+		(order) => order.orderStatus === "delivered"
+	);
+	useEffect(() => {
+		if (user?._id) dispatch(getUsersOrders(user._id));
+	}, [user, dispatch]);
 
-    const [selectedTab, setSelectedTab] = useState(0);
+	const [selectedTab, setSelectedTab] = useState(0);
 
-    const handleTabChange = (event, newValue) => {
-        setSelectedTab(newValue);
-    };
+	const handleTabChange = (event, newValue) => {
+		setSelectedTab(newValue);
+	};
 
-    const getOrderData = () => {
-        return selectedTab === 0 ? orderCurrent : orderPast;
-    };
+	const getOrderData = () => {
+		return selectedTab === 0 ? orderCurrent : orderPast;
+	};
 
-    return (
-        <Box>
-            <Tabs
-                value={selectedTab}
-                onChange={handleTabChange}
-                indicatorColor="primary"
-                textColor="primary"
-                centered
-            >
-                <Tab label="Current Order" />
-                <Tab label="Past Order" />
-            </Tabs>
-            <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                        <TableRow>
-                        <TableCell sx={{ fontFamily: "Poppins" }}>Order Id</TableCell>
-                            <TableCell sx={{ fontFamily: "Poppins" }}>Medicine</TableCell>
-                            <TableCell sx={{ fontFamily: "Poppins" }}>Type</TableCell>
-                            <TableCell sx={{ fontFamily: "Poppins" }}>Status</TableCell>
-                            <TableCell sx={{ fontFamily: "Poppins" }}>Inventory</TableCell>
-                            <TableCell sx={{ fontFamily: "Poppins" }}>Quantity</TableCell>
-                            <TableCell sx={{ fontFamily: "Poppins" }}>Price</TableCell>
-                            
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {getOrderData().map((order) => (
-                            <TableRow key={order.id}>
-                                <TableCell sx={{ fontFamily: "Poppins" }}>{order.id}</TableCell>
-                                <TableCell sx={{ fontFamily: "Poppins" }}>{order.name}</TableCell>
-                                <TableCell sx={{ fontFamily: "Poppins" }}>{order.type}</TableCell>
-                                <TableCell sx={{ fontFamily: "Poppins" }}>{order.status}</TableCell>
-                                <TableCell sx={{ fontFamily: "Poppins" }}>{order.inventory}</TableCell>
-                                <TableCell sx={{ fontFamily: "Poppins" }}>{order.quantity}</TableCell>
-                                <TableCell sx={{ fontFamily: "Poppins" }}>{order.total}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Box>
-    );
+	const [openRow, setOpenRow] = useState(null);
+
+	return (
+		<Box>
+			<Tabs
+				value={selectedTab}
+				onChange={handleTabChange}
+				indicatorColor="primary"
+				textColor="primary"
+				centered
+			>
+				<Tab label="Current Order" />
+				<Tab label="Past Order" />
+			</Tabs>
+			<TableContainer component={Paper}>
+				<Table aria-label="collapsible table">
+					<TableHead>
+						<TableRow>
+							<TableCell>Order Id</TableCell>
+							<TableCell>Date</TableCell>
+							<TableCell>Status</TableCell>
+							<TableCell>Items Ordered</TableCell>
+							<TableCell>Total Price</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{getOrderData()?.map((order) => (
+							<React.Fragment key={order._id}>
+								<TableRow
+									onClick={() =>
+										setOpenRow(
+											openRow === order._id
+												? null
+												: order._id
+										)
+									}
+								>
+									<TableCell>{order._id}</TableCell>
+									<TableCell>{order?.createdAt}</TableCell>
+									<TableCell>{order.orderStatus}</TableCell>
+									<TableCell>
+										{order.orderDetails?.length}
+									</TableCell>
+									<TableCell>
+										{calculateTotalPrice(
+											order?.orderDetails
+										)}
+									</TableCell>
+								</TableRow>
+								<Collapse
+									in={openRow === order._id}
+									timeout="auto"
+									unmountOnExit
+								>
+									<TableRow>
+										<TableCell colSpan={16}>
+											<List>
+												{order.orderDetails?.map(
+													(item) => (
+														<ListItem
+															key={item._id}
+														>
+															<ListItemText
+																primary={
+																	item.medicineName
+																}
+																secondary={`Quantity: ${item.quantity}, Price: ${item.price}`}
+															/>
+														</ListItem>
+													)
+												)}
+											</List>
+										</TableCell>
+									</TableRow>
+								</Collapse>
+							</React.Fragment>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</Box>
+	);
 };
 
 export default OrderSummary;

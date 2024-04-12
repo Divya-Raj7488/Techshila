@@ -8,3 +8,5 @@ export const inventoryApi = `${localhost}inventory/`;
 export const managerApi = `${userApi}managers/`;
 export const medicineApi = `${localhost}medicines/`;
 export const summaryApi = `${stockApi}summary/`;
+export const orderApi = `${stockApi}order/`;
+export const userOrderApi = `${localhost}order/`;
