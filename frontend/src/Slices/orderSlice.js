@@ -1,23 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { createOrderApi, orderApi } from "../Links.js";
+import { userOrderApi } from "../Links.js";
 
-export const getOrders = createAsyncThunk("orders/get", async () => {
-	return axios
-		.get(orderApi)
-		.then((response) => {
-			if (response.status === 200) {
-				return response.data;
-			}
-		})
-		.catch((error) => {
-			throw new Error(error.response.data.message || "An error occurred");
-		});
-});
+export const getUsersOrders = createAsyncThunk(
+	"userOrders/get",
+	async (userId) => {
+		return axios
+			.get(`${userOrderApi}/${userId}`)
+			.then((response) => {
+				if (response.status === 200) {
+					return response.data;
+				}
+			})
+			.catch((error) => {
+				throw new Error(
+					error.response.data.message || "An error occurred"
+				);
+			});
+	}
+);
 
 export const sendOrder = createAsyncThunk("order/add", async (orderData) => {
 	return axios
-		.post(createOrderApi, orderData)
+		.post(userOrderApi, orderData)
 		.then((response) => {
 			if (response.status === 201) {
 				return response.data;
@@ -54,15 +59,15 @@ const orderSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(getOrders.pending, (state) => {
+			.addCase(getUsersOrders.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(getOrders.fulfilled, (state, action) => {
+			.addCase(getUsersOrders.fulfilled, (state, action) => {
 				state.loading = false;
 				state.ordersList = action.payload;
 				state.error = "";
 			})
-			.addCase(getOrders.rejected, (state, action) => {
+			.addCase(getUsersOrders.rejected, (state, action) => {
 				state.loading = false;
 				state.ordersList = [];
 				state.error = action.error.message;

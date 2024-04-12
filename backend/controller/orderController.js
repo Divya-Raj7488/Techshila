@@ -1,15 +1,24 @@
 const Order = require("../models/order");
 
-const getOrders = (req, res) => {
-	const { _id } = req.user;
-	if (!_id) {
-		return res.status(401).json({ message: "unauthorized" });
+const getOrders = async (req, res) => {
+	try {
+		const orders = await Order.find();
+		res.status(200).json(orders);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Failed to fetch orders" });
 	}
-	const orderHistory = Order.find({ _id: _id });
-	return res.status(200).json({
-		message: "here is your orders",
-		orders: orderHistory,
-	});
+};
+
+const getOrdersByUserId = async (req, res) => {
+	const userId = req.params.userId;
+	try {
+		const orders = await Order.find({ userId });
+		res.status(200).json(orders);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Failed to fetch orders" });
+	}
 };
 
 const createOrders = async (req, res) => {
@@ -44,4 +53,4 @@ const createOrders = async (req, res) => {
 	}
 };
 
-module.exports = { getOrders, createOrders };
+module.exports = { getOrders, getOrdersByUserId, createOrders };
